@@ -1,15 +1,19 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <musicCategoriesList msg="musicCategoriesList"/>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import musicCategoriesList from "@/components/musicCategories/musicCategoriesList.vue";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld,
+    // eslint-disable-next-line vue/no-unused-components
+    musicCategoriesList
   }
 }
 </script>
