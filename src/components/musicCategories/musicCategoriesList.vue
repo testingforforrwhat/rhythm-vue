@@ -2,7 +2,7 @@
   <div>
     <h1>Music Categories</h1>
     <ul>
-      <li v-for="category in musicCategories" :key="category.categoryId">
+      <li v-for="category in categories" :key="category.categoryId">
         {{ category.categoryName }}
       </li>
     </ul>
@@ -15,7 +15,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      musicCategories: []
+      categories: []
     };
   },
   mounted() {
@@ -25,14 +25,7 @@ export default {
     fetchMusicCategories() {
       axios.get('http://127.0.0.1:8001/api/categories')
           .then(response => {
-            this.musicCategories = response.data.data.musicCategoriesList.map(category => {
-              return {
-                categoryId: category.categoryId,
-                categoryName: category.categoryName,
-                createdAt: new Date(category.createdAt),
-                updatedAt: new Date(category.updatedAt)
-              };
-            });
+            this.categories = response.data.data;
           })
           .catch(error => {
             console.error('Failed to fetch music categories', error);
