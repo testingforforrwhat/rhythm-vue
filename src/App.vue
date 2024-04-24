@@ -1,4 +1,21 @@
 <template>
+  <div>
+  <div class="header">
+
+    <a class="nav" href="">首页</a>
+    <a class="nav" href="">ads</a>
+    <a class="nav" href="">favourites</a>
+    <a class="nav" href="">music</a>
+    <a class="nav" href="">musicCategories</a>
+  </div>
+
+  <router-view></router-view>
+
+  <div class="footer">
+    this is footer
+  </div>
+
+  </div>
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
   <musicCategoriesList msg="musicCategoriesList"/>
