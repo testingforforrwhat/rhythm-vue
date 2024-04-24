@@ -2,11 +2,16 @@
   <div>
   <div class="header">
 
-    <a class="nav" href="">首页</a>
-    <a class="nav" href="">ads</a>
-    <a class="nav" href="">favourites</a>
-    <a class="nav" href="">music</a>
-    <a class="nav" href="/musicCayegories">musicCategories</a>
+<!--    <a class="nav" href="">首页</a>-->
+<!--    <a class="nav" href="">ads</a>-->
+<!--    <a class="nav" href="">favourites</a>-->
+<!--    <a class="nav" href="">music</a>-->
+<!--    <a class="nav" href="/musicCayegories">musicCategories</a>-->
+    <router-link to= "/" class="nav" >首页</router-link>
+    <router-link to= "/" class="nav" >ads</router-link>
+    <router-link to= "/" class="nav" >favourites</router-link>
+    <router-link to= "/" class="nav" >music</router-link>
+    <router-link to= "/musicCayegories" class="nav" >musicCategories</router-link>
   </div>
 
   <router-view></router-view>
