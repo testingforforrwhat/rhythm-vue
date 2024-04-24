@@ -7,6 +7,11 @@ const routes= [
         path: '/',
         name: 'musicCayegories',
         component: musicCayegories
+    },
+    {
+        path: '/musicCayegories',
+        name: 'musicCayegories',
+        component: musicCayegories
     }
 ]
 

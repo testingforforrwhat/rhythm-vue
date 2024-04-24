@@ -6,7 +6,7 @@
     <a class="nav" href="">ads</a>
     <a class="nav" href="">favourites</a>
     <a class="nav" href="">music</a>
-    <a class="nav" href="">musicCategories</a>
+    <a class="nav" href="/musicCayegories">musicCategories</a>
   </div>
 
   <router-view></router-view>
