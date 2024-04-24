@@ -12,6 +12,7 @@
     <router-link to= "/" class="nav" >favourites</router-link>
     <router-link to= "/" class="nav" >music</router-link>
     <router-link to= "/musicCayegories" class="nav" >musicCategories</router-link>
+
   </div>
 
   <router-view></router-view>
