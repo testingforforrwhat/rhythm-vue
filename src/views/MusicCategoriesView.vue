@@ -78,6 +78,8 @@ export default {
             console.log('Category added successfully:', response.data);
             // Handle success response
             // Optionally, update the category list with the new data
+            // Manually update the category list by fetching the updated data
+            this.fetchCategories();
           })
           .catch(error => {
             console.error('Error adding category:', error);
@@ -101,6 +103,8 @@ export default {
           .then(response => {
             console.log('Category updated successfully:', response.data);
             category.editing = false; // Turn off editing mode
+            // Manually update the category list by fetching the updated data
+            this.fetchCategories();
           })
           .catch(error => {
             console.error('Error updating category:', error);
@@ -119,6 +123,8 @@ export default {
           .then(response => {
             console.log('Category deleted successfully:', response.data);
             // Handle success response
+            // Manually update the category list by fetching the updated data
+            this.fetchCategories();
           })
           .catch(error => {
             console.error('Error deleting category:', error);
