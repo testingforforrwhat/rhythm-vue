@@ -13,7 +13,14 @@
         <button @click="deleteCategory(category.categoryId)">Delete</button>
       </li>
     </ul>
-    <button @click="addCategory">Add Category</button>
+
+    <form @submit.prevent="addCategory">
+      <label for="categoryName">Category Name:</label>
+      <input type="text" id="categoryName" v-model="newCategory.categoryName">
+
+      <button type="submit">Add Category</button>
+    </form>
+
     <div>
       <button @click="previousPage" :disabled="currentPage === 1">Previous</button>
       <span>{{ currentPage }} / {{ totalPages }}</span>
@@ -29,6 +36,9 @@ export default {
   data() {
     return {
       categories: [],
+      newCategory: {
+        categoryName: ''
+      },
       currentPage: 1,
       itemsPerPage: 5, // Number of items per page
     };
@@ -59,6 +69,21 @@ export default {
     addCategory() {
       // Implement add category functionality here
       console.log('Adding a new category');
+
+      const formData = new FormData();
+      formData.append('categoryName', this.newCategory.categoryName);
+
+      axios.post('http://127.0.0.1:8001/api/categories', formData)
+          .then(response => {
+            console.log('Category added successfully:', response.data);
+            // Handle success response
+            // Optionally, update the category list with the new data
+          })
+          .catch(error => {
+            console.error('Error adding category:', error);
+            // Handle error
+          });
+
     },
     enableEditing(category) {
       this.categories = this.categories.map(c => {
