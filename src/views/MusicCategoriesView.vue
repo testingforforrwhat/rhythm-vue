@@ -10,6 +10,7 @@
         <input v-else v-model="category.categoryName" @keyup.enter="saveCategory(category)" />
         <button v-if="!category.editing" @click="enableEditing(category)">Edit</button>
         <button v-if="category.editing" @click="saveCategory(category)">Save</button>
+        <button @click="deleteCategory(category.categoryId)">Delete</button>
       </li>
     </ul>
     <button @click="addCategory">Add Category</button>
