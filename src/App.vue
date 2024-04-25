@@ -7,11 +7,12 @@
 <!--    <a class="nav" href="">favourites</a>-->
 <!--    <a class="nav" href="">music</a>-->
 <!--    <a class="nav" href="/musicCayegories">musicCategories</a>-->
-    <router-link to= "/" class="nav" >首页</router-link>
-    <router-link to= "/" class="nav" >ads</router-link>
-    <router-link to= "/" class="nav" >favourites</router-link>
-    <router-link to= "/" class="nav" >music</router-link>
-    <router-link to= "/musicCayegories" class="nav" >musicCategories</router-link>
+    <router-link to= "/home" class="nav" >首页</router-link>
+    <router-link to= "/home/ads" class="nav" >ads</router-link>
+    <router-link to= "/home/favourites" class="nav" >favourites</router-link>
+    <router-link to= "/home/music" class="nav" >music</router-link>
+    <router-link to= "/home/musicCayegories" class="nav" >musicCategories</router-link>
+    <router-link to= "/home/users" class="nav" >user</router-link>
 
   </div>
 
