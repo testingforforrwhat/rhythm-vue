@@ -17,35 +17,34 @@ const routes= [
     {
         path: '/home',
         name: '首页',
-        component: HomeView,
-        children: [
-            {
-                path: '/ads',
-                name: 'AdsView',
-                component: AdsView
-            },
-            {
-                path: '/favourites',
-                name: 'FavouritesView',
-                component: FavouritesView
-            },
-            {
-                path: '/music',
-                name: 'MusicView',
-                component: MusicView
-            },
-            {
-                path: '/musicCategories',
-                name: 'MusicCategoriesView',
-                component: MusicCategoriesView
-            },
-            {
-                path: '/users',
-                name: 'UsersView',
-                component: UsersView
-            }
-        ]
+        component: HomeView
+    },
+    {
+        path: '/ads',
+        name: 'AdsView',
+        component: AdsView
+    },
+    {
+        path: '/favourites',
+        name: 'FavouritesView',
+        component: FavouritesView
+    },
+    {
+        path: '/music',
+        name: 'MusicView',
+        component: MusicView
+    },
+    {
+        path: '/musicCategories',
+        name: 'MusicCategoriesView',
+        component: MusicCategoriesView
+    },
+    {
+        path: '/users',
+        name: 'UsersView',
+        component: UsersView
     }
+
 ]
 
 const router = createRouter({

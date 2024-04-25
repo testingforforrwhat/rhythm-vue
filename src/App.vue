@@ -8,11 +8,11 @@
 <!--    <a class="nav" href="">music</a>-->
 <!--    <a class="nav" href="/musicCayegories">musicCategories</a>-->
     <router-link to= "/home" class="nav" >首页</router-link>
-    <router-link to= "/home/ads" class="nav" >ads</router-link>
-    <router-link to= "/home/favourites" class="nav" >favourites</router-link>
-    <router-link to= "/home/music" class="nav" >music</router-link>
-    <router-link to= "/home/musicCayegories" class="nav" >musicCategories</router-link>
-    <router-link to= "/home/users" class="nav" >user</router-link>
+    <router-link to= "/ads" class="nav" >ads</router-link>
+    <router-link to= "/favourites" class="nav" >favourites</router-link>
+    <router-link to= "/music" class="nav" >music</router-link>
+    <router-link to= "/musicCategories" class="nav" >musicCategories</router-link>
+    <router-link to= "/users" class="nav" >user</router-link>
 
   </div>
 
