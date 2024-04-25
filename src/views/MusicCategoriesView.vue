@@ -68,10 +68,10 @@ export default {
       });
     },
     saveCategory(category) {
-      axios.patch('http://127.0.0.1:8001/api/categories', {
-        categoryId: category.categoryId,
-        categoryName: category.categoryName
-      })
+      const formData = new FormData();
+      formData.append('categoryId', category.categoryId);
+      formData.append('categoryName', category.categoryName);
+      axios.patch('http://127.0.0.1:8001/api/categories', formData)
           .then(response => {
             console.log('Category updated successfully:', response.data);
             category.editing = false; // Turn off editing mode
