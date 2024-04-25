@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-
+  AdsView
 </template>
 
 <style scoped>

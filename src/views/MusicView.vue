@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-
+  MusicView
 </template>
 
 <style scoped>

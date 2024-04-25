@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-
+  HomeView
 </template>
 
 <style scoped>

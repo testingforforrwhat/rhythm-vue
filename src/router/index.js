@@ -1,11 +1,10 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import musicCayegories from '@/views/musicCategories/musicCategoriesList.vue'
 import LoginView from "@/views/LoginView.vue";
 import HomeView from "@/views/HomeView.vue";
 import AdsView from "@/views/AdsView.vue";
 import FavouritesView from "@/views/FavouritesView.vue";
 import MusicView from "@/views/MusicView.vue";
-import MusicCategoriesView from "@/views/musicCategories/MusicCategoriesView.vue";
+import MusicCategoriesView from "@/views/MusicCategoriesView.vue";
 import UsersView from "@/views/UsersView.vue";
 
 
