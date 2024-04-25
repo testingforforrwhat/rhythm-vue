@@ -5,7 +5,7 @@ import musicCayegories from '@/views/musicCategories/musicCategoriesList.vue'
 const routes= [
     {
         path: '/',
-        name: '登录',
+        name: 'musicCayegories',
         component: musicCayegories
     },
     {
@@ -14,29 +14,24 @@ const routes= [
         component: HomeView,
         children: [
             {
-                path: '/ads',
-                name: 'AdsView',
-                component: AdsView
+                path: '/musicCayegories',
+                name: 'musicCayegories',
+                component: musicCayegories
             },
             {
-                path: '/favourites',
-                name: 'FavouritesView',
-                component: FavouritesView
+                path: '/musicCayegories',
+                name: 'musicCayegories',
+                component: musicCayegories
             },
             {
-                path: '/music',
-                name: 'MusicView',
-                component: MusicView
+                path: '/musicCayegories',
+                name: 'musicCayegories',
+                component: musicCayegories
             },
             {
-                path: '/musicCategories',
-                name: 'MusicCategoriesView',
-                component: MusicCategoriesView
-            },
-            {
-                path: '/users',
-                name: 'UsersView',
-                component: UsersView
+                path: '/musicCayegories',
+                name: 'musicCayegories',
+                component: musicCayegories
             }
         ]
     }
