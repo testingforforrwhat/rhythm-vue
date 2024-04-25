@@ -3,9 +3,13 @@
     <h1>Category List</h1>
     <ul>
       <li v-for="category in paginatedCategories" :key="category.categoryId">
-        {{ category.categoryName }}
-        <button @click="editCategory(category)">Edit</button>
-        <button @click="deleteCategory(category.categoryId)">Delete</button>
+<!--        {{ category.categoryName }}-->
+<!--        <button @click="editCategory(category)">Edit</button>-->
+<!--        <button @click="deleteCategory(category.categoryId)">Delete</button>-->
+        <span v-if="!category.editing">{{ category.categoryName }}</span>
+        <input v-else v-model="category.categoryName" @keyup.enter="saveCategory(category)" />
+        <button v-if="!category.editing" @click="enableEditing(category)">Edit</button>
+        <button v-if="category.editing" @click="saveCategory(category)">Save</button>
       </li>
     </ul>
     <button @click="addCategory">Add Category</button>
@@ -54,6 +58,27 @@ export default {
     addCategory() {
       // Implement add category functionality here
       console.log('Adding a new category');
+    },
+    enableEditing(category) {
+      this.categories = this.categories.map(c => {
+        if (c.categoryId === category.categoryId) {
+          return { ...c, editing: true };
+        }
+        return c;
+      });
+    },
+    saveCategory(category) {
+      axios.patch('http://127.0.0.1:8001/api/categories', {
+        categoryId: category.categoryId,
+        categoryName: category.categoryName
+      })
+          .then(response => {
+            console.log('Category updated successfully:', response.data);
+            category.editing = false; // Turn off editing mode
+          })
+          .catch(error => {
+            console.error('Error updating category:', error);
+          });
     },
     editCategory(category) {
       // Implement edit functionality here
