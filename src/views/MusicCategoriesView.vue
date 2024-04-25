@@ -87,7 +87,19 @@ export default {
     },
     deleteCategory(categoryId) {
       // Implement delete functionality here
+
       console.log('Deleting category with ID:', categoryId);
+
+      axios.delete(`http://127.0.0.1:8001/api/categories/${categoryId}`)
+          .then(response => {
+            console.log('Category deleted successfully:', response.data);
+            // Handle success response
+          })
+          .catch(error => {
+            console.error('Error deleting category:', error);
+            // Handle error
+          });
+
     },
     previousPage() {
       if (this.currentPage > 1) {
