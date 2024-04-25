@@ -6,7 +6,7 @@ const routes= [
     {
         path: '/',
         name: '登录',
-        component: musicCayegories
+        component: LoginView
     },
     {
         path: '/home',
