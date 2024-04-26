@@ -65,6 +65,8 @@ router.beforeEach( (to,from,next)=>{
             next( { name : "Login" } )
         }
     }
+    // 路由放行
+    next()
 })
 
 
