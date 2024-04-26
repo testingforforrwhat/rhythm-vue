@@ -80,7 +80,7 @@ router.beforeEach( (to,from,next)=>{
             // 当前用户未登录
             alert("您未登录，请先登录!")
             // 路由拦截 重定向到登陆页面
-            next( { name : "Login" } )
+            next( { name : "登录" } )
         }
     }
     // 路由放行
