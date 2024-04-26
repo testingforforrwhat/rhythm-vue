@@ -52,6 +52,21 @@ const router = createRouter({
     routes  // 定义地址和页面的映射
 })
 
+// 路由守卫方法
+router.beforeEach( (to,from,next)=>{
+
+    // 判断路由定向的目标 是否需要登录才能访问
+    if( to.meta.needLogin ) {
+        // 当前 路由定向的目标 是需要登录才能访问
+        if( localStorage.getItem("token") == null ) {
+            // 当前用户未登录
+            alert("您未登录，请先登录!")
+            // 路由拦截 重定向到登陆页面
+            next( { name : "Login" } )
+        }
+    }
+})
+
 
 
 export default router
