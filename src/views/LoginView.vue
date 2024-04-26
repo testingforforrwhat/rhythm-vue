@@ -77,10 +77,12 @@ export default {
     login() {
       // Perform login logic here
       // After successful login, set isLoggedIn to true and store logged in user
-      axios.post('http://127.0.0.1:8001/api/users/login', {
-        username: this.loginUsername,
-        password: this.loginPassword
-      })
+
+      const formData = new FormData();
+      formData.append('userLoginName', this.loginUsername);
+      formData.append('userLoginPass', this.loginPassword);
+
+      axios.post('http://127.0.0.1:8001/api/users/login', formData)
           .then(response => {
             console.log('Login successful:', response.data);
             // After successful login, set isLoggedIn to true and store logged in user
