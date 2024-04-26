@@ -15,7 +15,7 @@
           {{ music.createdAt }},
           {{ music.updatedAt }}</span>
         <input v-else v-model="music.title" @keyup.enter="saveMusic(music)" />
-        <button v-if="!music.editing" @click="enableEditing(music)">Edit</button>
+        <button v-if="!music.title.editing" @click="enableEditing(music)">Edit</button>
         <button v-if="music.editing" @click="saveMusic(music)">Save</button>
         <button @click="deleteMusic(music.musicId)">Delete</button>
       </li>
@@ -96,7 +96,7 @@ export default {
     },
     enableEditing(music) {
       this.music = this.music.map(c => {
-        if (c.music_id === music.music_id) {
+        if (c.musicId === music.musicId) {
           return { ...c, editing: true };
         }
         return c;
