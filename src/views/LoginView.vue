@@ -56,10 +56,12 @@ export default {
     register() {
       // Perform registration logic here
       // After successful registration, set isRegistered to true
-      axios.post('http://127.0.0.1:8001/api/users/regist', {
-        userLoginName: this.registerUsername,
-        userValidate: this.registerPassword
-      })
+
+      const formData = new FormData();
+      formData.append('userLoginName', this.registerUsername);
+      formData.append('userValidate', this.registerPassword);
+
+      axios.post('http://127.0.0.1:8001/api/users/regist', formData)
           .then(response => {
             console.log('Registration successful:', response.data);
             // After successful registration, set isRegistered to true
