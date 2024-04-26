@@ -17,32 +17,50 @@ const routes= [
     {
         path: '/home',
         name: '首页',
-        component: HomeView
+        component: HomeView,
+        meta : {
+            needLogin : true
+        }
     },
     {
         path: '/ads',
         name: 'AdsView',
-        component: AdsView
+        component: AdsView,
+        meta : {
+            needLogin : true
+        }
     },
     {
         path: '/favourites',
         name: 'FavouritesView',
-        component: FavouritesView
+        component: FavouritesView,
+        meta : {
+            needLogin : true
+        }
     },
     {
         path: '/music',
         name: 'MusicView',
-        component: MusicView
+        component: MusicView,
+        meta : {
+            needLogin : true
+        }
     },
     {
         path: '/musicCategories',
         name: 'MusicCategoriesView',
-        component: MusicCategoriesView
+        component: MusicCategoriesView,
+        meta : {
+            needLogin : true
+        }
     },
     {
         path: '/users',
         name: 'UsersView',
-        component: UsersView
+        component: UsersView,
+        meta : {
+            needLogin : true
+        }
     }
 
 ]
