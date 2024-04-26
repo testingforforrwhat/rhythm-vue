@@ -7,6 +7,7 @@
       <input type="text" v-model="registerUsername" placeholder="Username">
       <input type="password" v-model="registerPassword" placeholder="Password/ReceivedmessageCode">
       <button @click="register">Register</button>
+      <button @click="getSms">getSms</button>
     </div>
 
     <div v-if="isRegistered || isLoggedIn">
@@ -41,9 +42,7 @@ export default {
     };
   },
   methods: {
-    register() {
-      // Perform registration logic here
-      // After successful registration, set isRegistered to true
+    getSms() {
 
       axios.get(`http://127.0.0.1:8001/sms/validate/${this.registerUsername}`)
           .then(() => {
@@ -53,6 +52,10 @@ export default {
             console.error('Error send sms', error);
           });
 
+    },
+    register() {
+      // Perform registration logic here
+      // After successful registration, set isRegistered to true
       axios.post('http://127.0.0.1:8001/api/users/regist', {
         userLoginName: this.registerUsername,
         userValidate: this.registerPassword
@@ -66,6 +69,7 @@ export default {
             console.error('Registration failed:', error);
             // Handle registration error
             alert('Registration failed,')
+            this.isRegistered = false;
           });
     },
     login() {
