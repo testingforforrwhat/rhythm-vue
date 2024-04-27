@@ -93,7 +93,7 @@ export default {
             alert("Login successful")
             // 将登陆成功后 服务器签发的token令牌 存入到本地缓存 LocalStorage(f12-application-storage-localstorage/sessionstorage)
             // 如果不存储token,因为router index.js的设置, 登录也无法访问相关页面 index.js if( localStorage.getItem("token") == null )
-            // LocalStorage本次会话存储,关闭浏览器=回话关闭,localstorage存储数据empty,如果关闭浏览器重新打开,sessionStorage
+            // LocalStorage本次会话存储,关闭浏览器(不是标签页)=回话关闭,localstorage存储数据empty,如果关闭浏览器重新打开,sessionStorage
             localStorage.setItem("token", response.data.data);
             // 路由重定向到home首页
             router.push( { name : "首页" } )
