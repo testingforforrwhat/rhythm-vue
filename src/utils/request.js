@@ -16,3 +16,10 @@ import router from "@/router/index.js";
 
 // 创建axios异步请求对象 进行初始化 配置
 const request = axios.create()
+
+// 配置 axios 请求 拦截器
+request.interceptors.request.use( config => {
+    // 将当前登录的用户的token令牌 设置到 request header
+    config.headers.Authorization = localStorage.getItem("token")
+    return config
+})

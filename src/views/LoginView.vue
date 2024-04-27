@@ -27,6 +27,7 @@
 <script>
 
 import axios from "axios";
+import router from "@/router";
 
 export default {
   name: "LoginView",
@@ -88,6 +89,12 @@ export default {
             // After successful login, set isLoggedIn to true and store logged in user
             this.isLoggedIn = true;
             this.loggedInUser = this.loginUsername;
+
+            alert("Login successful")
+            // 将登陆成功后 服务器签发的token令牌 存入到本地缓存 LocalStorage
+            localStorage.setItem("token", response.data.data);
+            // 路由重定向到home首页
+            router.push( { name : "首页" } )
           })
           .catch(error => {
             console.error('Login failed:', error);
