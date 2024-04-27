@@ -92,6 +92,7 @@ export default {
 
             alert("Login successful")
             // 将登陆成功后 服务器签发的token令牌 存入到本地缓存 LocalStorage
+            // LocalStorage本次session会话存储,关闭浏览器=回话关闭,localstorage存储数据empty
             localStorage.setItem("token", response.data.data);
             // 路由重定向到home首页
             router.push( { name : "首页" } )
