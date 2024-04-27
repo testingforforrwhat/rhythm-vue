@@ -12,3 +12,7 @@ import axios from "axios";
 import qs from 'qs';
 
 import router from "@/router/index.js";
+
+
+// 创建axios异步请求对象 进行初始化 配置
+const request = axios.create()
