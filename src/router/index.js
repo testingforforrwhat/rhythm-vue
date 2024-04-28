@@ -19,7 +19,7 @@ const routes= [
         name: '首页',
         component: HomeView,
         meta : {
-            needLogin : true
+            needLogin : false
         }
     },
     {
@@ -27,7 +27,7 @@ const routes= [
         name: 'AdsView',
         component: AdsView,
         meta : {
-            needLogin : true
+            needLogin : false
         }
     },
     {
@@ -43,7 +43,7 @@ const routes= [
         name: 'MusicView',
         component: MusicView,
         meta : {
-            needLogin : true
+            needLogin : false
         }
     },
     {
@@ -51,7 +51,7 @@ const routes= [
         name: 'MusicCategoriesView',
         component: MusicCategoriesView,
         meta : {
-            needLogin : true
+            needLogin : false
         }
     },
     {
