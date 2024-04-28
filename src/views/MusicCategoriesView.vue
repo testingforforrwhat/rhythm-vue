@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     fetchCategories() {
-      axios.get('http://127.0.0.1:8001/api/categories')
+      axios.get('http://127.0.0.1:8080/api/api/categories')
           .then(response => {
             this.categories = response.data.data;
           })
