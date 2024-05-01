@@ -6,6 +6,7 @@ import FavouritesView from "@/views/FavouritesView.vue";
 import MusicView from "@/views/MusicView.vue";
 import MusicCategoriesView from "@/views/MusicCategoriesView.vue";
 import UsersView from "@/views/UsersView.vue";
+import RegisterView from "@/views/RegisterView.vue";
 
 
 const routes= [
@@ -13,6 +14,14 @@ const routes= [
         path: '/',
         name: '登录',
         component: LoginView
+    },
+    {
+        path: '/register',
+        name: '注册',
+        component: RegisterView,
+        meta : {
+            needLogin : false
+        }
     },
     {
         path: '/home',

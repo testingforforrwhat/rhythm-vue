@@ -23,14 +23,14 @@
         active-text-color="#ffd04b"
         @select="handleSelect"
     >
-      <el-menu-item index="1">首页</el-menu-item>
-      <el-sub-menu index="2">ads</el-sub-menu>
-      <el-menu-item index="3" disabled>favourites</el-menu-item>
-      <el-menu-item index="4">music</el-menu-item>
-      <el-menu-item index="4">musicCategories</el-menu-item>
-      <el-menu-item index="4">user</el-menu-item>
-      <el-menu-item index="4">Register</el-menu-item>
-      <el-menu-item index="4">Login</el-menu-item>
+      <el-menu-item index="1"><router-link to= "/home" class="nav" >首页</router-link></el-menu-item>
+      <el-sub-menu index="2"><router-link to= "/ads" class="nav" >ads</router-link></el-sub-menu>
+      <el-menu-item index="3"><router-link to= "/favourites" class="nav" >favourites</router-link></el-menu-item>
+      <el-menu-item index="4"><router-link to= "/music" class="nav" >music</router-link></el-menu-item>
+      <el-menu-item index="5"><router-link to= "/musicCategories" class="nav" >musicCategories</router-link></el-menu-item>
+      <el-menu-item index="6"><router-link to= "/users" class="nav" >user</router-link></el-menu-item>
+      <el-menu-item index="7"><router-link to= "/" class="nav" >Login</router-link></el-menu-item>
+      <el-menu-item index="8"><router-link to= "/register" class="nav" >Register</router-link></el-menu-item>
     </el-menu>
 
   </div>
