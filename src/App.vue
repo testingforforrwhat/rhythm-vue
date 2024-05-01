@@ -14,6 +14,25 @@
     <router-link to= "/musicCategories" class="nav" >musicCategories</router-link>
     <router-link to= "/users" class="nav" >user</router-link>
 
+    <el-menu
+        :default-active="activeIndex2"
+        class="el-menu-demo"
+        mode="horizontal"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+        @select="handleSelect"
+    >
+      <el-menu-item index="1">首页</el-menu-item>
+      <el-sub-menu index="2">ads</el-sub-menu>
+      <el-menu-item index="3" disabled>favourites</el-menu-item>
+      <el-menu-item index="4">music</el-menu-item>
+      <el-menu-item index="4">musicCategories</el-menu-item>
+      <el-menu-item index="4">user</el-menu-item>
+      <el-menu-item index="4">Register</el-menu-item>
+      <el-menu-item index="4">Login</el-menu-item>
+    </el-menu>
+
   </div>
 
   <router-view></router-view>
@@ -23,22 +42,22 @@
   </div>
 
   </div>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-  <musicCategoriesList msg="musicCategoriesList"/>
+<!--  <img alt="Vue logo" src="./assets/logo.png">-->
+<!--  <HelloWorld msg="Welcome to Your Vue.js App"/>-->
+<!--  <musicCategoriesList msg="musicCategoriesList"/>-->
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import musicCategoriesList from "@/components/musicCategories/musicCategoriesList.vue";
+// import HelloWorld from './components/HelloWorld.vue'
+// import musicCategoriesList from "@/components/musicCategories/musicCategoriesList.vue";
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld,
-    // eslint-disable-next-line vue/no-unused-components
-    musicCategoriesList
-  }
+  // components: {
+  //   HelloWorld,
+  //   // eslint-disable-next-line vue/no-unused-components
+  //   musicCategoriesList
+  // }
 }
 </script>
 
