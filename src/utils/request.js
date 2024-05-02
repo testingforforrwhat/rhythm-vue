@@ -31,3 +31,7 @@ request.interceptors.request.use( config => {
     config.headers.Authorization = localStorage.getItem("token")
     return config
 })
+
+
+// 导出
+export {request}
