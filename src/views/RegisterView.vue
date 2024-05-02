@@ -1,7 +1,11 @@
 <template>
   <div>
     <h1>注册页面</h1>
-    <!--    el-form 的 v-model="" ref="" 在vue3中值不能相同, 否则输入框一次只能输入一个字符-->
+    <!--
+    el-form 的 v-model="" ref="" 在vue3中值不能相同, 否则输入框一次只能输入一个字符
+    https://blog.csdn.net/soladuor/article/details/127201889?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EOPENSEARCH%7ERate-1-127201889-blog-138326158.235%5Ev43%5Epc_blog_bottom_relevance_base8&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EOPENSEARCH%7ERate-1-127201889-blog-138326158.235%5Ev43%5Epc_blog_bottom_relevance_base8&utm_relevant_index=1
+    https://blog.csdn.net/h1753806379/article/details/138326158
+    -->
     <el-form ref="registerFormData" :model="registerForm" :rules="rules" label-width="80px">
       <el-form-item label="用户名" prop="username">
         <el-input v-model="registerForm.username"></el-input>
