@@ -35,10 +35,10 @@ export default {
     return {
       registerUsername: '',
       registerPassword: '',
-      loginUsername: '',
-      loginPassword: '',
+      // loginUsername: '',
+      // loginPassword: '',
       isRegistered: false,
-      isLoggedIn: false,
+      // isLoggedIn: false,
       loggedInUser: '',
     };
   },
