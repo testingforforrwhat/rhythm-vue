@@ -25,7 +25,8 @@
 
 <script>
 
-import axios from "axios";
+// import axios from "axios";
+import { requestAll} from "@/utils/request";
 // import router from "@/router";
 
 export default {
@@ -82,7 +83,7 @@ export default {
       formData.append('userLoginName', this.loginUsername);
       formData.append('userLoginPass', this.loginPassword);
 
-      axios.post('http://127.0.0.1:8001/api/users/login', formData)
+      requestAll.post('users/login', formData)
           .then(response => {
             console.log('Login successful:', response.data);
             // After successful login, set isLoggedIn to true and store logged in user
