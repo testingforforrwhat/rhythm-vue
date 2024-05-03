@@ -2,15 +2,15 @@
   <div>
     <h1>Login/Register</h1>
 
-    <div v-if="!isRegistered">
-      <h2>Register</h2>
-      <input type="text" v-model="registerUsername" placeholder="Username">
-      <input type="password" v-model="registerPassword" placeholder="Password/ReceivedmessageCode">
-      <button @click="register">Register</button>
-      <button @click="getSms">getSms</button>
-    </div>
+<!--    <div v-if="!isRegistered">-->
+<!--      <h2>Register</h2>-->
+<!--      <input type="text" v-model="registerUsername" placeholder="Username">-->
+<!--      <input type="password" v-model="registerPassword" placeholder="Password/ReceivedmessageCode">-->
+<!--      <button @click="register">Register</button>-->
+<!--      <button @click="getSms">getSms</button>-->
+<!--    </div>-->
 
-    <div v-if="isRegistered || isLoggedIn">
+    <div v-if="!isLoggedIn">
       <h2>Login</h2>
       <input type="text" v-model="loginUsername" placeholder="Username">
       <input type="password" v-model="loginPassword" placeholder="Password">
@@ -43,38 +43,38 @@ export default {
     };
   },
   methods: {
-    getSms() {
-
-      axios.get(`http://127.0.0.1:8001/sms/validate/${this.registerUsername}`)
-          .then(() => {
-            console.log('sending sms...');
-          })
-          .catch(error => {
-            console.error('Error send sms', error);
-          });
-
-    },
-    register() {
-      // Perform registration logic here
-      // After successful registration, set isRegistered to true
-
-      const formData = new FormData();
-      formData.append('userLoginName', this.registerUsername);
-      formData.append('userValidate', this.registerPassword);
-
-      axios.post('http://127.0.0.1:8001/api/users/regist', formData)
-          .then(response => {
-            console.log('Registration successful:', response.data);
-            // After successful registration, set isRegistered to true
-            this.isRegistered = true;
-          })
-          .catch(error => {
-            console.error('Registration failed:', error);
-            // Handle registration error
-            alert('Registration failed,')
-            this.isRegistered = false;
-          });
-    },
+    // getSms() {
+    //
+    //   axios.get(`http://127.0.0.1:8001/sms/validate/${this.registerUsername}`)
+    //       .then(() => {
+    //         console.log('sending sms...');
+    //       })
+    //       .catch(error => {
+    //         console.error('Error send sms', error);
+    //       });
+    //
+    // },
+    // register() {
+    //   // Perform registration logic here
+    //   // After successful registration, set isRegistered to true
+    //
+    //   const formData = new FormData();
+    //   formData.append('userLoginName', this.registerUsername);
+    //   formData.append('userValidate', this.registerPassword);
+    //
+    //   axios.post('http://127.0.0.1:8001/api/users/regist', formData)
+    //       .then(response => {
+    //         console.log('Registration successful:', response.data);
+    //         // After successful registration, set isRegistered to true
+    //         this.isRegistered = true;
+    //       })
+    //       .catch(error => {
+    //         console.error('Registration failed:', error);
+    //         // Handle registration error
+    //         alert('Registration failed,')
+    //         this.isRegistered = false;
+    //       });
+    // },
     login() {
       // Perform login logic here
       // After successful login, set isLoggedIn to true and store logged in user
