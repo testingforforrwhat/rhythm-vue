@@ -108,6 +108,7 @@ export default {
       // Perform logout logic here
       this.isLoggedIn = false;
       this.loggedInUser = '';
+      localStorage.clear()
     },
   },
 };
