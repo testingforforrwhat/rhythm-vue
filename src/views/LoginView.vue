@@ -26,7 +26,7 @@
 <script>
 
 import axios from "axios";
-import router from "@/router";
+// import router from "@/router";
 
 export default {
   name: "LoginView",
@@ -95,7 +95,7 @@ export default {
             // LocalStorage本次会话存储,关闭浏览器(不是标签页)=会话关闭,localstorage存储数据empty,如果关闭浏览器重新打开,sessionStorage
             localStorage.setItem("token", response.data.data);
             // 路由重定向到home首页
-            router.push( { name : "首页" } )
+            // router.push( { name : "首页" } )
           })
           .catch(error => {
             console.error('Login failed:', error);
