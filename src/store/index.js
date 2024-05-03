@@ -12,6 +12,7 @@ export default createStore({
     // 各组件实例的(异步)方法 迁移到这儿
     actions: {
     },
+    // 总仓库 不实现任何状态管理 (没有 state mutations actions)         只合并子仓库
     modules: {
     }
 })
