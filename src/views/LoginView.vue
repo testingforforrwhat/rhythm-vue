@@ -27,6 +27,7 @@
 
 // import axios from "axios";
 import { requestAll} from "@/utils/request";
+// import store from "@/store";
 // import router from "@/router";
 
 export default {
@@ -97,6 +98,11 @@ export default {
             localStorage.setItem("token", response.data.data);
             // 路由重定向到home首页
             // router.push( { name : "首页" } )
+            // 登录成功后保存登录状态到本地存储
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('loggedInUser', this.loggedInUser);
+            // 在 Vuex 状态管理中保存登录状态
+            // store.commit('isLoggedIn', true);
           })
           .catch(error => {
             console.error('Login failed:', error);
@@ -111,5 +117,18 @@ export default {
       localStorage.clear()
     },
   },
+  mounted() {
+    // 页面加载时检查本地存储中的登录状态
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+      // 显示“已登录”状态
+      console.log('已登录');
+      this.isLoggedIn = true;
+      this.loggedInUser = localStorage.getItem('loggedInUser');
+    } else {
+      // 显示登录界面
+      console.log('显示登录界面');
+    }
+  }
 };
 </script>
