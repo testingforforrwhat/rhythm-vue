@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Login/Register</h1>
+    <h1>Login</h1>
 
 <!--    <div v-if="!isRegistered">-->
 <!--      <h2>Register</h2>-->
@@ -11,7 +11,6 @@
 <!--    </div>-->
 
     <div v-if="!isLoggedIn">
-      <h2>Login</h2>
       <input type="text" v-model="loginUsername" placeholder="Username">
       <input type="password" v-model="loginPassword" placeholder="Password">
       <button @click="login">Login</button>
@@ -33,11 +32,11 @@ export default {
   name: "LoginView",
   data() {
     return {
-      registerUsername: '',
-      registerPassword: '',
+      // registerUsername: '',
+      // registerPassword: '',
       loginUsername: '',
       loginPassword: '',
-      isRegistered: false,
+      // isRegistered: false,
       isLoggedIn: false,
       loggedInUser: '',
     };
