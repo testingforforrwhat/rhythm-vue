@@ -7,8 +7,6 @@ import MusicView from "@/views/MusicView.vue";
 import MusicCategoriesView from "@/views/MusicCategoriesView.vue";
 import UsersView from "@/views/UsersView.vue";
 import RegisterView from "@/views/RegisterView.vue";
-// import store from "@/store";
-// import {store} from "core-js/internals/reflect-metadata";
 
 
 const routes= [
@@ -84,8 +82,6 @@ const router = createRouter({
 // 路由守卫方法
 router.beforeEach( (to,from,next)=>{
 
-    // const isLoggedIn = store.state.login.isLoggedIn; // 从 Vuex 状态管理中获取登录状态
-    // console.log(isLoggedIn.valueOf())
     // 判断路由定向的目标 是否需要登录才能访问
     if( to.meta.needLogin ) {
         // 当前 路由定向的目标 是需要登录才能访问
@@ -98,7 +94,6 @@ router.beforeEach( (to,from,next)=>{
     }
     // 路由放行
     next()
-
 })
 
 
