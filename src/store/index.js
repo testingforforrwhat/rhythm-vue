@@ -1,5 +1,6 @@
 // 从 vuex 模块 导入 创建仓库的方法
 import { createStore } from 'vuex'
+import login from "@/store/modules/login";
 
 // 创建 总仓库 并且导出
 export default createStore({
@@ -14,5 +15,6 @@ export default createStore({
     },
     // 总仓库 不实现任何状态管理 (没有 state mutations actions)         只合并子仓库
     modules: {
+        login
     }
 })
