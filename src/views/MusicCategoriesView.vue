@@ -42,7 +42,7 @@
 
     <div>
         <el-table
-            :data="categoryList"
+            :data="pagedCategories"
             stripe
             border
             style="width: 100%"
@@ -86,24 +86,22 @@
 
         </el-table>
 
-<!--    <div class="demo-pagination-block">-->
-<!--      <div class="demonstration">All combined</div>-->
-<!--      <el-pagination-->
-<!--          v-model:current-page="currentPage"-->
-<!--          v-model:page-size="pageSize"-->
-<!--          v-model:total="totalPages"-->
-<!--          :page-sizes="[10, 20, 30, 40]"-->
-<!--          :small="small"-->
-<!--          :disabled="disabled"-->
-<!--          :background="background"-->
-<!--          layout="total, sizes, prev, pager, next, jumper"-->
-<!--          :total="totalPages"-->
-<!--          @size-change="handleSizeChange"-->
-<!--          @current-change="handleCurrentChange"-->
-<!--          @prev-click="previousPage"-->
-<!--          @next-click="nextPage"-->
-<!--      />-->
-<!--    </div>-->
+    <div class="demo-pagination-block">
+      <el-pagination
+          v-model:current-page="currentPage"
+          v-model:page-size="pageSize"
+          v-model:total="totalRowsCount"
+          :page-sizes="[10, 20, 30, 40]"
+          :small="small"
+          :disabled="disabled"
+          :background="background"
+          layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          @prev-click="previousPage"
+          @next-click="nextPage"
+      />
+    </div>
     </div>
 
 
@@ -135,10 +133,9 @@ export default {
   data() {
     return {
       categoryList: [],
-      itemsPerPage: 5, // Number of items per page
       currentPage: 1, // 当前页数
       pageSize: 10, // 每页条数
-      total: 100, // 总条数
+      total: 0, // 总条数
       small: false,
       disabled: false,
       background: false,
@@ -161,7 +158,12 @@ export default {
       return this.categoryList.slice(start, end);
     },
     totalPages() {
-      return Math.ceil(this.categoryList.length / this.itemsPerPage);
+      console.log(`总页数为: ${Math.ceil(this.categoryList.length / this.pageSize)}`)
+      return Math.ceil(this.categoryList.length / this.pageSize)*10;
+    },
+    totalRowsCount() {
+      console.log(`总数据量数目为: ${Math.ceil(this.categoryList.length)}`)
+      return Math.ceil(this.categoryList.length);
     },
   },
   mounted() {
