@@ -15,6 +15,30 @@
 
 
     <div>
+
+      <el-upload
+          :show-file-list="false"
+          :before-upload="beforeUpload"
+          :on-success="onSuccess"
+          :on-error="onError"
+          :disabled="importDataDisabled"
+          style="display: inline-flex;margin-right: 8px"
+          action="/api/basic/import">
+        <el-button :disabled="importDataDisabled" type="success" :icon="importDataBtnIcon">
+          {{importDataBtnText}}
+        </el-button>
+      </el-upload>
+
+      <el-button type="success" @click="exportData" :icon="Download">
+        导出数据
+      </el-button>
+
+      <el-button type="primary" @click="addCategory" :icon="Plus">
+        添加用户
+      </el-button>
+    </div>
+
+    <div>
         <el-table
             :data="categoryList"
             stripe
@@ -45,6 +69,18 @@
               label="更新时间"
               prop="updatedAt"
               width="120px"></el-table-column>
+
+          <el-table-column
+              fixed="right"
+              width="250"
+              label="操作">
+            <template v-slot="scope">
+              <el-button @click="editCategory(scope.row)" style="padding: 3px" size="small">编辑</el-button>
+              <el-button style="padding: 3px" size="small" type="primary">查看详细资料</el-button>
+              <el-button @click="deleteCategory(scope.row)" style="padding: 3px" size="small" type="danger">删除
+              </el-button>
+            </template>
+          </el-table-column>
 
         </el-table>
 
@@ -90,7 +126,8 @@
 
 <script>
 import axios from 'axios';
-import moment from 'moment'; // 引入 moment.js 用于时间格式化
+import moment from 'moment';
+import {Download, Plus} from "@element-plus/icons-vue"; // 引入 moment.js 用于时间格式化
 
 export default {
   data() {
@@ -103,9 +140,19 @@ export default {
       small: false,
       disabled: false,
       background: false,
+
+      importDataBtnText: '导入数据',
+      importDataBtnIcon: 'Upload',
+      importDataDisabled: false,
     };
   },
   computed: {
+    Plus() {
+      return Plus
+    },
+    Download() {
+      return Download
+    },
     pagedCategories() {
       const start = (this.currentPage - 1) * this.pageSize;
       const end = start + this.pageSize;
