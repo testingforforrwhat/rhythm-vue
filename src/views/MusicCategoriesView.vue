@@ -24,9 +24,11 @@
           :disabled="importDataDisabled"
           style="display: inline-flex;margin-right: 8px"
           action="/api/basic/import">
+
         <el-button :disabled="importDataDisabled" type="success" :icon="importDataBtnIcon">
           {{importDataBtnText}}
         </el-button>
+
       </el-upload>
 
       <el-button type="success" @click="exportData" :icon="Download">
