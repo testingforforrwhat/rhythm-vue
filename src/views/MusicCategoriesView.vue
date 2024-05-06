@@ -38,7 +38,8 @@
           <el-table-column
               label="创建时间"
               prop="createdAt"
-              width="120px"></el-table-column>
+              width="120px"
+              :formatter="formatDate"></el-table-column>
 
           <el-table-column
               label="更新时间"
@@ -89,6 +90,7 @@
 
 <script>
 import axios from 'axios';
+import moment from 'moment'; // 引入 moment.js 用于时间格式化
 
 export default {
   data() {
@@ -133,6 +135,9 @@ export default {
           .catch(error => {
             console.error('Error fetching categories:', error);
           });
+    },
+    formatDate(row, column, cellValue) {
+      return moment(cellValue).format('YYYY-MM-DD HH:mm:ss'); // 格式化日期时间
     },
     addCategory() {
       // Implement add category functionality here
