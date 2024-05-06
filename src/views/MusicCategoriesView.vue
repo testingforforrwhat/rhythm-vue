@@ -14,30 +14,58 @@
 <!--      </li>-->
 
 
+    <div>
+        <el-table
+            :data="categoryList"
+            stripe
+            border
+            style="width: 100%"
+              >
 
-        <el-table :data="pagedCategories" style="width: 100%"  >
-          <el-table-column prop="categoryName" label="cateGoryName" width="150" v-model="pagedCategories.categoryName" />
-          <el-table-column prop="createdAt" label="createdAt" width="120" v-model="pagedCategories.createdAt"/>
-          <el-table-column prop="updatedAt" label="updatedAt" width="120" v-model="pagedCategories.updatedAt"/>
+          <el-table-column
+              type="selection"></el-table-column>
+
+          <el-table-column
+              label="分类ID"
+              prop="categoryId"
+              width="150px"></el-table-column>
+
+          <el-table-column
+              label="分类名称"
+              prop="categoryName"
+              width="150px"></el-table-column>
+
+          <el-table-column
+              label="创建时间"
+              prop="createdAt"
+              width="120px"></el-table-column>
+
+          <el-table-column
+              label="更新时间"
+              prop="updatedAt"
+              width="120px"></el-table-column>
+
         </el-table>
 
-    <div class="demo-pagination-block">
-      <div class="demonstration">All combined</div>
-      <el-pagination
-          v-model:current-page="currentPage"
-          v-model:page-size="pageSize"
-          v-model:total="pageSize"
-          :page-sizes="[10, 20, 30, 40]"
-          :small="small"
-          :disabled="disabled"
-          :background="background"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="100"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-      />
+<!--    <div class="demo-pagination-block">-->
+<!--      <div class="demonstration">All combined</div>-->
+<!--      <el-pagination-->
+<!--          v-model:current-page="currentPage"-->
+<!--          v-model:page-size="pageSize"-->
+<!--          v-model:total="totalPages"-->
+<!--          :page-sizes="[10, 20, 30, 40]"-->
+<!--          :small="small"-->
+<!--          :disabled="disabled"-->
+<!--          :background="background"-->
+<!--          layout="total, sizes, prev, pager, next, jumper"-->
+<!--          :total="totalPages"-->
+<!--          @size-change="handleSizeChange"-->
+<!--          @current-change="handleCurrentChange"-->
+<!--          @prev-click="previousPage"-->
+<!--          @next-click="nextPage"-->
+<!--      />-->
+<!--    </div>-->
     </div>
-
 
 
 
@@ -65,9 +93,11 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      categories: [],
-      currentPage: 1,
-      pageSize: 10,
+      categoryList: [],
+      itemsPerPage: 5, // Number of items per page
+      currentPage: 1, // 当前页数
+      pageSize: 10, // 每页条数
+      total: 100, // 总条数
       small: false,
       disabled: false,
       background: false,
@@ -77,11 +107,14 @@ export default {
     pagedCategories() {
       const start = (this.currentPage - 1) * this.pageSize;
       const end = start + this.pageSize;
-      return this.categories.slice(start, end);
+      return this.categoryList.slice(start, end);
+    },
+    totalPages() {
+      return Math.ceil(this.categoryList.length / this.itemsPerPage);
     },
   },
   mounted() {
-    this.fetchCategories();
+    this.fetchCategoryList();
   },
   methods: {
 
@@ -92,10 +125,10 @@ export default {
       this.currentPage = page;
     },
 
-    fetchCategories() {
+    fetchCategoryList() {
       axios.get('http://127.0.0.1:8080/api/api/categories')
           .then(response => {
-            this.categories = response.data.data;
+            this.categoryList = response.data.data;
           })
           .catch(error => {
             console.error('Error fetching categories:', error);
@@ -106,7 +139,7 @@ export default {
       console.log('Adding a new category');
 
       const formData = new FormData();
-      formData.append('categoryName', this.newCategory.categoryName);
+      formData.append('categoryName', this.categoryList.categoryName);
 
       axios.post('http://127.0.0.1:8001/api/categories', formData)
           .then(response => {
@@ -123,7 +156,7 @@ export default {
 
     },
     enableEditing(category) {
-      this.categories = this.categories.map(c => {
+      this.categoryList = this.categoryList.map(c => {
         if (c.categoryId === category.categoryId) {
           return { ...c, editing: true };
         }
