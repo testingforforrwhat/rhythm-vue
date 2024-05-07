@@ -127,7 +127,8 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
-import {Download, Plus} from "@element-plus/icons-vue"; // 引入 moment.js 用于时间格式化
+import {Download, Plus} from "@element-plus/icons-vue";
+import {requestAll} from "@/utils/request"; // 引入 moment.js 用于时间格式化
 
 export default {
   data() {
@@ -179,7 +180,7 @@ export default {
     },
 
     fetchCategoryList() {
-      axios.get('http://127.0.0.1:8080/api/api/categories')
+      requestAll.get('categories')
           .then(response => {
             this.categoryList = response.data.data;
           })
