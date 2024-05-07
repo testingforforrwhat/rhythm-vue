@@ -38,6 +38,7 @@
 
 <script>
 import axios from 'axios';
+import {requestAll} from "@/utils/request";
 
 export default {
   data() {
@@ -65,7 +66,7 @@ export default {
   },
   methods: {
     fetchMusic() {
-      axios.get('http://127.0.0.1:8001/api/music')
+      requestAll.get('music')
           .then(response => {
             this.music = response.data.data;
           })
