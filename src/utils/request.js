@@ -17,7 +17,7 @@ import axios from "axios";
 // 创建axios异步请求对象 进行初始化 配置
 const requestAll = axios.create(
     {
-        baseURL: "http://127.0.0.1:8001/api/",
+        baseURL: "/api/",
         // 发送 post/put/patch/delete 请求之前 对 data 参数进行统一处理
         // transformRequest(data){
         //     return qs.stringify(data)
