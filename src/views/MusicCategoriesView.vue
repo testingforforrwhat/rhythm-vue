@@ -36,7 +36,7 @@
       </el-button>
 
       <el-button type="primary" @click="addCategory" :icon="Plus">
-        添加用户
+        添加分类
       </el-button>
     </div>
 
