@@ -131,7 +131,7 @@
         </div>
         <span  class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="doAddCategory">确 定</el-button>
+    <el-button type="primary" @click="addCategory">确 定</el-button>
   </span>
       </el-dialog>
 
@@ -242,15 +242,18 @@ export default {
       console.log('Adding a new category');
 
       const formData = new FormData();
-      formData.append('categoryName', this.categoryList.categoryName);
+      formData.append('categoryName', this.categoryForm.categoryName);
 
-      axios.post('http://127.0.0.1:8001/api/categories', formData)
+      axios.post(
+          'http://127.0.0.1:8001/api/categories',
+          {'categoryName': this.categoryForm.categoryName})
           .then(response => {
             console.log('Category added successfully:', response.data);
             // Handle success response
             // Optionally, update the category list with the new data
             // Manually update the category list by fetching the updated data
-            this.fetchCategories();
+            this.dialogVisible = false;
+            this.fetchCategoryList();
           })
           .catch(error => {
             console.error('Error adding category:', error);
