@@ -246,12 +246,12 @@ export default {
       // Implement edit functionality here
       console.log('Editing category:', category);
     },
-    deleteCategory(data) {
+    deleteCategory(category) {
       // Implement delete functionality here
 
-      console.log('Deleting category with ID:', data);
+      console.log('Deleting category with ID:', category.categoryId);
 
-      axios.delete("http://127.0.0.1:8001/api/categories/" + data.categoryId)
+      axios.delete("http://127.0.0.1:8001/api/categories/" + category.categoryId)
           .then(response => {
             console.log('Category deleted successfully:', response.data);
             // Handle success response
