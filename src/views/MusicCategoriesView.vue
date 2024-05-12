@@ -35,7 +35,7 @@
         导出数据
       </el-button>
 
-      <el-button type="primary" @click="addCategory" :icon="Plus">
+      <el-button type="primary" @click="ShowaddCategoryView" :icon="Plus">
         添加分类
       </el-button>
     </div>
@@ -110,6 +110,31 @@
           @next-click="nextPage"
       />
     </div>
+
+      <el-dialog
+          :title="title"
+          v-model="dialogVisible"
+          width="80%">
+        <div>
+          <el-form :model="categoryForm" ref="categoryForm">
+
+            <el-row>
+              <el-col :span="6">
+                <el-form-item label="分类:" prop="categoryName">
+                  <el-input size="small" style="width: 150px" prefix-icon="el-icon-edit" v-model="categoryForm.categoryName"
+                            placeholder="请输入分类"></el-input>
+                </el-form-item>
+              </el-col>
+
+            </el-row>
+          </el-form>
+        </div>
+        <span  class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="doAddCategory">确 定</el-button>
+  </span>
+      </el-dialog>
+
     </div>
 
 
@@ -158,7 +183,13 @@ export default {
         categoryName: "test",
         createdAt: 0,
         updatedAt: 0,
+      },
+
+      dialogVisible: false,
+      categoryForm: {
+        categoryName: ''
       }
+
     };
   },
   computed: {
@@ -269,6 +300,12 @@ export default {
       // Implement edit functionality here
       console.log('Editing category:', category);
     },
+    ShowaddCategoryView() {
+      this.emptyCategory();
+      this.title = '添加分类';
+
+      this.dialogVisible = true;
+    },
     deleteCategory(category) {
       // Implement delete functionality here
 
@@ -297,6 +334,14 @@ export default {
         this.currentPage++;
       }
     },
+    emptyCategory() {
+      this.category = {
+        categoryId: 1,
+        categoryName: "test",
+        createdAt: 0,
+        updatedAt: 0,
+      }
+    }
   },
 };
 </script>
