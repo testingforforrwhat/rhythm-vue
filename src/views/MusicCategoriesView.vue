@@ -256,7 +256,7 @@ export default {
             console.log('Category deleted successfully:', response.data);
             // Handle success response
             // Manually update the category list by fetching the updated data
-            this.fetchCategories();
+            this.fetchCategoryList();
           })
           .catch(error => {
             console.error('Error deleting category:', error);
