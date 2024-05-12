@@ -9,6 +9,13 @@
     <el-form-item label="确认密码" prop="confirmPassword">
       <el-input type="password" v-model="registerForm.confirmPassword"></el-input>
     </el-form-item>
+    <el-form-item label="手机号" prop="phone">
+      <el-input                 v-model="registerForm.phone"></el-input>
+    </el-form-item>
+    <el-form-item label="短信验证码" prop="verificationCode">
+      <el-input                 v-model="registerForm.verificationCode"></el-input>
+      <el-button @click="sendVerificationCode" v-if="!verificationCodeSent">发送验证码</el-button>
+    </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('registerForm')">注册</el-button>
       <el-button @click="resetForm('registerForm')">重置</el-button>
@@ -17,6 +24,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     var validateUsername = (rule, value, callback) => {
@@ -45,8 +54,11 @@ export default {
       registerForm: {
         username: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        phone: '',
+        verificationCode: ''
       },
+      verificationCodeSent: false,
       rules: {
         username: [
           {validator: validateUsername, trigger: 'blur'}
@@ -61,6 +73,17 @@ export default {
     };
   },
   methods: {
+    sendVerificationCode() {
+      axios.get(`http://127.0.0.1:8001/sms/validate/${this.registerForm.phone}`)
+          .then(() => {
+            console.log('sending sms...');
+            alert('验证码已发送，请查收短信');
+            this.verificationCodeSent = true;
+          })
+          .catch(error => {
+            console.error('Error send sms', error);
+          });
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
