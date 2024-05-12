@@ -1,4 +1,6 @@
 <template>
+
+  <div v-if="!isLoggedIn">
   <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" label-width="100px" class="login-form">
     <el-form-item label="用户名" prop="username">
       <el-input v-model="loginForm.username"></el-input>
@@ -11,6 +13,13 @@
       <el-button @click="resetForm('loginForm')">重置</el-button>
     </el-form-item>
   </el-form>
+  </div>
+
+  <div v-if="isLoggedIn">
+    <p>Welcome, {{ loggedInUser }}</p>
+    <button @click="logout">Logout</button>
+  </div>
+
 </template>
 
 <script>
@@ -36,6 +45,8 @@ export default {
         username: '',
         password: ''
       },
+      isLoggedIn: false,
+      loggedInUser: '',
       rules: {
         username: [
           { validator: validateUsername, trigger: 'blur' }
@@ -93,6 +104,25 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+    logout() {
+      // Perform logout logic here
+      this.isLoggedIn = false;
+      this.loggedInUser = '';
+      localStorage.clear()
+    },
+  },
+  mounted() {
+    // 页面加载时检查本地存储中的登录状态
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+      // 显示“已登录”状态
+      console.log('已登录');
+      this.isLoggedIn = true;
+      this.loggedInUser = localStorage.getItem('loggedInUser');
+    } else {
+      // 显示登录界面
+      console.log('显示登录界面');
     }
   }
 };
