@@ -78,7 +78,6 @@ export default {
           .then(() => {
             console.log('sending sms...');
             alert('验证码已发送，请查收短信');
-            this.verificationCodeSent = true;
           })
           .catch(error => {
             console.error('Error send sms', error);
@@ -94,6 +93,7 @@ export default {
           const formData = new FormData();
           formData.append('userLoginName', this.registerForm.username);
           formData.append('userLoginPass', this.registerForm.password);
+          formData.append('userPhone', this.registerForm.phone);
           formData.append('userValidate', this.registerForm.verificationCode);
 
           axios.post('http://127.0.0.1:8001/api/users/regist', formData)
