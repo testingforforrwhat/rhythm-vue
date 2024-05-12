@@ -77,7 +77,9 @@
               width="250"
               label="操作">
             <template v-slot="scope">
-              <el-button @click="editCategory(scope.row)" style="padding: 3px" size="small">编辑</el-button>
+              <el-button @click="toggleEditing(scope.row)" style="padding: 3px" size="small">
+                {{ scope.row.editing ? '保存' : '编辑' }}
+              </el-button>
               <el-button style="padding: 3px" size="small" type="primary">查看详细资料</el-button>
               <el-button @click="deleteCategory(scope.row)" style="padding: 3px" size="small" type="danger">删除
               </el-button>
@@ -219,6 +221,14 @@ export default {
           });
 
     },
+    // enableEditing(category) {
+    //   this.categoryList = this.categoryList.map(c => {
+    //     if (c.categoryId === category.categoryId) {
+    //       return { ...c, editing: true };
+    //     }
+    //     return c;
+    //   });
+    // },
     enableEditing(category) {
       this.categoryList = this.categoryList.map(c => {
         if (c.categoryId === category.categoryId) {
@@ -226,6 +236,13 @@ export default {
         }
         return c;
       });
+    },
+    toggleEditing(category) {
+      if (category.editing) {
+        this.saveCategory(category);
+      } else {
+        this.enableEditing(category);
+      }
     },
     saveCategory(category) {
       const formData = new FormData();
