@@ -17,7 +17,7 @@
 
   <div v-if="isLoggedIn">
     <p>Welcome, {{ loggedInUser }}</p>
-    <button @click="logout">Logout</button>
+    <el-button @click="logout">Logout</el-button>
   </div>
 
 </template>
