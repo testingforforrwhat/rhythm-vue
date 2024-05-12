@@ -59,7 +59,12 @@
           <el-table-column
               label="分类名称"
               prop="categoryName"
-              width="150px"></el-table-column>
+              width="150px"
+              v-slot="scope">
+            <el-input v-if="scope.row.editing"
+                      v-model="scope.row.categoryName"
+                      @keyup.enter="saveCategory(scope.row.categoryName)" />
+          </el-table-column>
 
           <el-table-column
               label="创建时间"
