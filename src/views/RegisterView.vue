@@ -87,6 +87,28 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+
+          // Perform registration logic here
+          // After successful registration, set isRegistered to true
+
+          const formData = new FormData();
+          formData.append('userLoginName', this.registerForm.username);
+          formData.append('userLoginPass', this.registerForm.password);
+          formData.append('userValidate', this.registerForm.verificationCode);
+
+          axios.post('http://127.0.0.1:8001/api/users/regist', formData)
+              .then(response => {
+                console.log('Registration successful:', response.data);
+                // After successful registration, set isRegistered to true
+                this.isRegistered = true;
+              })
+              .catch(error => {
+                console.error('Registration failed:', error);
+                // Handle registration error
+                alert('Registration failed,')
+                this.isRegistered = false;
+              });
+
           alert('注册成功!');
         } else {
           console.log('注册失败');
