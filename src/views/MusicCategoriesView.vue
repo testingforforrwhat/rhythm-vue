@@ -259,7 +259,7 @@ export default {
             console.log('Category updated successfully:', response.data);
             category.editing = false; // Turn off editing mode
             // Manually update the category list by fetching the updated data
-            this.fetchCategories();
+            this.fetchCategoryList();
           })
           .catch(error => {
             console.error('Error updating category:', error);
