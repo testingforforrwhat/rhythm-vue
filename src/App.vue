@@ -24,7 +24,7 @@
         @select="handleSelect"
     >
       <el-menu-item index="1"><router-link to= "/home" class="nav" >首页</router-link></el-menu-item>
-      <el-sub-menu index="2"><router-link to= "/ads" class="nav" >ads</router-link></el-sub-menu>
+      <el-menu-item index="2"><router-link to= "/ads" class="nav" >ads</router-link></el-menu-item>
       <el-menu-item index="3"><router-link to= "/favourites" class="nav" >favourites</router-link></el-menu-item>
       <el-menu-item index="4"><router-link to= "/music" class="nav" >music</router-link></el-menu-item>
       <el-menu-item index="5"><router-link to= "/musicCategories" class="nav" >musicCategories</router-link></el-menu-item>
