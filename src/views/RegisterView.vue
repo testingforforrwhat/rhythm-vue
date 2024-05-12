@@ -74,11 +74,45 @@ export default {
     };
 
     const handleSubmit = () => {
-      const formRef = ref('registerForm');
-      formRef.value.validate((valid) => {
+      /*
+      在 Vue.js 中，通常使用 ref 引用来引用 DOM 元素或组件实例，以便在 Vue 实例中
+      访问和操作这些元素或组件。
+      ，formRef 引用应该是指向 <el-form> 组件实例的，
+      而该组件实例应该具有 validate 方法用于表单验证。
+      */
+      // const formRef = ref('registerFormData');
+      /*
+      formRef.value.validate((valid)
+      对整个表单进行校验的方法，参数为一个回调函数。
+      该回调函数会在校验结束后被调用，并传入两个参数：是否校验成功和未通过校验的字段。
+      若不传入回调函数，则会返回一个 promise
+      https://element.eleme.cn/#/zh-CN/component/form
+      */
+      this.$refs.registerFormData.validate((valid) => {
         if (valid) {
           // 表单验证通过，可以发送注册请求
-          alert('用户注册成功！');
+          axios.request({
+            url: 'users/regist',
+            method: "POST",
+            data: {
+              'userLoginName': registerForm.value.username,
+              'userLoginPass': registerForm.value.password,
+              'userValidate': registerForm.value.verificationCode,
+              'userPhone': registerForm.value.phone
+            }
+          }).then(response => {
+            console.log('Registration successful:', response.data);
+            alert('用户注册成功！');
+            // After successful registration, set isRegistered to true
+
+          })
+              .catch(error => {
+                console.error('Registration failed:', error);
+                // Handle registration error
+                alert('Registration failed,')
+
+              });
+
         } else {
           return false;
         }
