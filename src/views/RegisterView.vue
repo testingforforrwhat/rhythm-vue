@@ -25,7 +25,6 @@
 
 <script>
 import axios from "axios";
-import router from "@/router";
 
 export default {
   data() {
@@ -101,7 +100,7 @@ export default {
               .then(response => {
                 console.log('Registration successful:', response.data);
                 // After successful registration, set isRegistered to true
-                router.push( { name : "登录" } )
+                this.isRegistered = true;
               })
               .catch(error => {
                 console.error('Registration failed:', error);
