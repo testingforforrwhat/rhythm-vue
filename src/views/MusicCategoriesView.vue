@@ -77,6 +77,7 @@
               width="250"
               label="操作">
             <template v-slot="scope">
+              <el-input v-if="scope.row.editing" v-model="scope.row.categoryName" @keyup.enter="saveCategory(scope.row.categoryName)" />
               <el-button @click="toggleEditing(scope.row)" style="padding: 3px" size="small">
                 {{ scope.row.editing ? '保存' : '编辑' }}
               </el-button>
