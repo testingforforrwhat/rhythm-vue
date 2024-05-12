@@ -144,6 +144,13 @@ export default {
       importDataBtnText: '导入数据',
       importDataBtnIcon: 'Upload',
       importDataDisabled: false,
+
+      category: {
+        categoryId: 1,
+        categoryName: "test",
+        createdAt: 0,
+        updatedAt: 0,
+      }
     };
   },
   computed: {
@@ -239,12 +246,12 @@ export default {
       // Implement edit functionality here
       console.log('Editing category:', category);
     },
-    deleteCategory(categoryId) {
+    deleteCategory(data) {
       // Implement delete functionality here
 
-      console.log('Deleting category with ID:', categoryId);
+      console.log('Deleting category with ID:', data);
 
-      axios.delete(`http://127.0.0.1:8001/api/categories/${categoryId}`)
+      axios.delete("http://127.0.0.1:8001/api/categories/" + data.categoryId)
           .then(response => {
             console.log('Category deleted successfully:', response.data);
             // Handle success response
