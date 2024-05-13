@@ -99,7 +99,7 @@
 
         <el-table-column
             fixed="right"
-            width="250"
+            width="290"
             label="操作">
           <template v-slot="scope">
             <el-input v-if="scope.row.editing" v-model="scope.row.categoryName" @keyup.enter="saveCategory(scope.row.categoryName)" />
@@ -109,6 +109,8 @@
             <el-button style="padding: 3px" size="small" type="primary">查看详细资料</el-button>
             <el-button @click="deleteCategory(scope.row)" style="padding: 3px" size="small" type="danger">删除
             </el-button>
+            <el-button @click="playAudio(scope.row)" style="padding: 3px" size="small">Play Audio</el-button>
+            <audio ref="audio" @play="incrementPlayCount"></audio>
           </template>
         </el-table-column>
 
@@ -180,11 +182,16 @@ export default {
       importDataBtnIcon: 'Upload',
       importDataDisabled: false,
 
-      category: {
-        categoryId: 1,
-        categoryName: "test",
-        createdAt: 0,
-        updatedAt: 0,
+      music: {
+        musicId: '',
+        title: '',
+        artist: '',
+        album: '',
+        categoryId: '',
+        musicFile: '',
+        createdAt: '',
+        updatedAt: '',
+        musicPlayCount:'',
       },
 
       dialogVisible: false,
