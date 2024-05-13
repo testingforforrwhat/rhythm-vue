@@ -1,157 +1,290 @@
 <template>
   <div>
     <h1>Music List</h1>
-    <ul>
-      <li v-for="music in paginatedMusic" :key="music.musicId">
-        <!--        {{ music.title }}-->
-        <!--        <button @click="editMusic(music)">Edit</button>-->
-        <!--        <button @click="deleteMusic(music.music_id)">Delete</button>-->
-        <span v-if="!music.editing">
-          {{ music.title }},
-          {{ music.artist }},
-          {{ music.album }},
-          {{ music.categoryId }},
-          {{ music.musiFile }},
-          {{ music.createdAt }},
-          {{ music.updatedAt }}</span>
-        <input v-else v-model="music.title" @keyup.enter="saveMusic(music)" />
-        <button v-if="!music.title.editing" @click="enableEditing(music)">Edit</button>
-        <button v-if="music.editing" @click="saveMusic(music)">Save</button>
-        <button @click="deleteMusic(music.musicId)">Delete</button>
-      </li>
-    </ul>
-
-    <form @submit.prevent="addMusic">
-      <label for="title">Music Name:</label>
-      <input type="text" id="title" v-model="newMusic.title">
-
-      <button type="submit">Add Music</button>
-    </form>
 
     <div>
-      <button @click="previousPage" :disabled="currentPage === 1">Previous</button>
-      <span>{{ currentPage }} / {{ totalPages }}</span>
-      <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
+
+      <el-upload
+          :show-file-list="false"
+          :before-upload="beforeUpload"
+          :on-success="onSuccess"
+          :on-error="onError"
+          :disabled="importDataDisabled"
+          style="display: inline-flex;margin-right: 8px"
+          action="/api/basic/import">
+
+        <el-button :disabled="importDataDisabled" type="success" :icon="importDataBtnIcon">
+          {{importDataBtnText}}
+        </el-button>
+
+      </el-upload>
+
+      <el-button type="success" @click="exportData" :icon="Download">
+        导出数据
+      </el-button>
+
+      <el-button type="primary" @click="ShowaddCategoryView" :icon="Plus">
+        添加分类
+      </el-button>
+    </div>
+
+    <div>
+      <el-table
+          :data="pagedCategories"
+          stripe
+          border
+          style="width: 100%"
+      >
+
+        <el-table-column
+            type="selection"></el-table-column>
+
+        <el-table-column
+            label="分类ID"
+            prop="categoryId"
+            width="150px"></el-table-column>
+
+        <el-table-column
+            label="分类名称"
+            prop="categoryName"
+            width="150px"
+            v-slot="scope">
+          <el-input v-if="scope.row.editing"
+                    v-model="scope.row.categoryName"
+                    @keyup.enter="saveCategory(scope.row.categoryName)" />
+        </el-table-column>
+
+        <el-table-column
+            label="创建时间"
+            prop="createdAt"
+            width="120px"
+            :formatter="formatDate"></el-table-column>
+
+        <el-table-column
+            label="更新时间"
+            prop="updatedAt"
+            width="120px"></el-table-column>
+
+        <el-table-column
+            fixed="right"
+            width="250"
+            label="操作">
+          <template v-slot="scope">
+            <el-input v-if="scope.row.editing" v-model="scope.row.categoryName" @keyup.enter="saveCategory(scope.row.categoryName)" />
+            <el-button @click="toggleEditing(scope.row)" style="padding: 3px" size="small">
+              {{ scope.row.editing ? '保存' : '编辑' }}
+            </el-button>
+            <el-button style="padding: 3px" size="small" type="primary">查看详细资料</el-button>
+            <el-button @click="deleteCategory(scope.row)" style="padding: 3px" size="small" type="danger">删除
+            </el-button>
+          </template>
+        </el-table-column>
+
+      </el-table>
+
+      <div class="demo-pagination-block">
+        <el-pagination
+            v-model:current-page="currentPage"
+            v-model:page-size="pageSize"
+            v-model:total="totalRowsCount"
+            :page-sizes="[10, 20, 30, 40]"
+            :small="small"
+            :disabled="disabled"
+            :background="background"
+            layout="total, sizes, prev, pager, next, jumper"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            @prev-click="previousPage"
+            @next-click="nextPage"
+        />
+      </div>
+
+      <el-dialog
+          :title="title"
+          v-model="dialogVisible"
+          width="80%">
+        <div>
+          <el-form :model="categoryForm" ref="categoryForm">
+
+            <el-row>
+              <el-col :span="6">
+                <el-form-item label="分类:" prop="categoryName">
+                  <el-input size="small" style="width: 150px" prefix-icon="el-icon-edit" v-model="categoryForm.categoryName"
+                            placeholder="请输入分类"></el-input>
+                </el-form-item>
+              </el-col>
+
+            </el-row>
+          </el-form>
+        </div>
+        <span  class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="addCategory">确 定</el-button>
+  </span>
+      </el-dialog>
+
     </div>
   </div>
-
-  <div>
-    <button @click="playAudio">Play Audio</button>
-    <audio ref="audio" @play="incrementPlayCount"></audio>
-  </div>
-
 </template>
 
 <script>
 import axios from 'axios';
-import {requestAll} from "@/utils/request";
+import moment from 'moment';
+import {Download, Plus} from "@element-plus/icons-vue";
+import {requestAll} from "@/utils/request"; // 引入 moment.js 用于时间格式化
 
 export default {
   data() {
     return {
-      music: [],
-      newMusic: {
-        title: ''
+      categoryList: [],
+      currentPage: 1, // 当前页数
+      pageSize: 10, // 每页条数
+      total: 0, // 总条数
+      small: false,
+      disabled: false,
+      background: false,
+
+      importDataBtnText: '导入数据',
+      importDataBtnIcon: 'Upload',
+      importDataDisabled: false,
+
+      category: {
+        categoryId: 1,
+        categoryName: "test",
+        createdAt: 0,
+        updatedAt: 0,
       },
-      currentPage: 1,
-      itemsPerPage: 5, // Number of items per page
+
+      dialogVisible: false,
+      categoryForm: {
+        categoryName: ''
+      }
+
     };
   },
   computed: {
-    paginatedMusic() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.music.slice(startIndex, endIndex);
+    Plus() {
+      return Plus
+    },
+    Download() {
+      return Download
+    },
+    pagedCategories() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.categoryList.slice(start, end);
     },
     totalPages() {
-      return Math.ceil(this.music.length / this.itemsPerPage);
+      console.log(`总页数为: ${Math.ceil(this.categoryList.length / this.pageSize)}`)
+      return Math.ceil(this.categoryList.length / this.pageSize) * 10;
+    },
+    totalRowsCount() {
+      console.log(`总数据量数目为: ${Math.ceil(this.categoryList.length)}`)
+      return Math.ceil(this.categoryList.length);
     },
   },
   mounted() {
-    this.fetchMusic();
+    this.fetchCategoryList();
   },
   methods: {
-    playAudio() {
-      const audio = this.$refs.audio;
-      audio.src = this.audioUrl;
-      audio.play();
+
+    handleSizeChange(size) {
+      this.pageSize = size;
     },
-    incrementPlayCount() {
-      axios.post('http://localhost:8080/api/increment-play-count', {
-        songId: 1 // 假设歌曲ID为1
-      });
+    handleCurrentChange(page) {
+      this.currentPage = page;
     },
-    fetchMusic() {
-      requestAll.get('music')
+
+    fetchCategoryList() {
+      requestAll.get('categories')
           .then(response => {
-            this.music = response.data.data;
+            this.categoryList = response.data.data;
           })
           .catch(error => {
-            console.error('Error fetching music:', error);
+            console.error('Error fetching categories:', error);
           });
     },
-    addMusic() {
-      // Implement add music functionality here
-      console.log('Adding a new music');
+    formatDate(row, column, cellValue) {
+      return moment(cellValue).format('YYYY-MM-DD HH:mm:ss'); // 格式化日期时间
+    },
+    addCategory() {
+      // Implement add category functionality here
+      console.log('Adding a new category');
 
       const formData = new FormData();
-      formData.append('title', this.newMusic.title);
+      formData.append('categoryName', this.categoryForm.categoryName);
 
-      axios.post('http://127.0.0.1:8001/api/music', formData)
+      axios.post(
+          'http://127.0.0.1:8001/api/categories',
+          {'categoryName': this.categoryForm.categoryName})
           .then(response => {
-            console.log('Music added successfully:', response.data);
+            console.log('Category added successfully:', response.data);
             // Handle success response
-            // Optionally, update the music list with the new data
-            // Manually update the music list by fetching the updated data
-            this.fetchMusic();
+            // Optionally, update the category list with the new data
+            // Manually update the category list by fetching the updated data
+            this.dialogVisible = false;
+            this.fetchCategoryList();
           })
           .catch(error => {
-            console.error('Error adding music:', error);
+            console.error('Error adding category:', error);
             // Handle error
           });
 
     },
-    enableEditing(music) {
-      this.music = this.music.map(c => {
-        if (c.musicId === music.musicId) {
-          return { ...c, editing: true };
+    enableEditing(category) {
+      this.categoryList = this.categoryList.map(c => {
+        if (c.categoryId === category.categoryId) {
+          return {...c, editing: true};
         }
         return c;
       });
     },
-    saveMusic(music) {
+    toggleEditing(category) {
+      if (category.editing) {
+        this.saveCategory(category);
+      } else {
+        this.enableEditing(category);
+      }
+    },
+    saveCategory(category) {
       const formData = new FormData();
-      formData.append('music_id', music.music_id);
-      formData.append('title', music.title);
-      axios.patch('http://127.0.0.1:8001/api/music', formData)
+      formData.append('categoryId', category.categoryId);
+      formData.append('categoryName', category.categoryName);
+      axios.patch('http://127.0.0.1:8001/api/categories', formData)
           .then(response => {
-            console.log('Music updated successfully:', response.data);
-            music.editing = false; // Turn off editing mode
-            // Manually update the music list by fetching the updated data
-            this.fetchMusic();
+            console.log('Category updated successfully:', response.data);
+            category.editing = false; // Turn off editing mode
+            // Manually update the category list by fetching the updated data
+            this.fetchCategoryList();
           })
           .catch(error => {
-            console.error('Error updating music:', error);
+            console.error('Error updating category:', error);
           });
     },
-    editMusic(music) {
+    editCategory(category) {
       // Implement edit functionality here
-      console.log('Editing music:', music);
+      console.log('Editing category:', category);
     },
-    deleteMusic(music_id) {
+    ShowaddCategoryView() {
+      this.emptyCategory();
+      this.title = '添加分类';
+
+      this.dialogVisible = true;
+    },
+    deleteCategory(category) {
       // Implement delete functionality here
 
-      console.log('Deleting music with ID:', music_id);
+      console.log('Deleting category with ID:', category.categoryId);
 
-      axios.delete(`http://127.0.0.1:8001/api/music/${music_id}`)
+      axios.delete("http://127.0.0.1:8001/api/categories/" + category.categoryId)
           .then(response => {
-            console.log('Music deleted successfully:', response.data);
+            console.log('Category deleted successfully:', response.data);
             // Handle success response
-            // Manually update the music list by fetching the updated data
-            this.fetchMusic();
+            // Manually update the category list by fetching the updated data
+            this.fetchCategoryList();
           })
           .catch(error => {
-            console.error('Error deleting music:', error);
+            console.error('Error deleting category:', error);
             // Handle error
           });
 
@@ -166,6 +299,14 @@ export default {
         this.currentPage++;
       }
     },
+    emptyCategory() {
+      this.category = {
+        categoryId: 1,
+        categoryName: "test",
+        createdAt: 0,
+        updatedAt: 0,
+      }
+    }
   },
 };
 </script>
