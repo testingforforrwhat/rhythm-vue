@@ -34,6 +34,12 @@
       <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>
     </div>
   </div>
+
+  <div>
+    <button @click="playAudio">Play Audio</button>
+    <audio ref="audio" @play="incrementPlayCount"></audio>
+  </div>
+
 </template>
 
 <script>
@@ -65,6 +71,16 @@ export default {
     this.fetchMusic();
   },
   methods: {
+    playAudio() {
+      const audio = this.$refs.audio;
+      audio.src = this.audioUrl;
+      audio.play();
+    },
+    incrementPlayCount() {
+      axios.post('http://localhost:8080/api/increment-play-count', {
+        songId: 1 // 假设歌曲ID为1
+      });
+    },
     fetchMusic() {
       requestAll.get('music')
           .then(response => {
