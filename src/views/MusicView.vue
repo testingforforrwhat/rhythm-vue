@@ -30,7 +30,7 @@
 
     <div>
       <el-table
-          :data="pagedCategories"
+          :data="pagedMusicList"
           stripe
           border
           style="width: 100%"
@@ -40,8 +40,50 @@
             type="selection"></el-table-column>
 
         <el-table-column
+            label="音乐ID"
+            prop="musicId"
+            width="150px"></el-table-column>
+
+        <el-table-column
+            label="歌曲名称"
+            prop="title"
+            width="150px"></el-table-column>
+
+        <el-table-column
+            label="歌手"
+            prop="artist"
+            width="150px"></el-table-column>
+
+        <el-table-column
+            label="专辑"
+            prop="album"
+            width="150px"></el-table-column>
+
+        <el-table-column
             label="分类ID"
             prop="categoryId"
+            width="150px"></el-table-column>
+
+        <el-table-column
+            label="音乐文件路径"
+            prop="musicFile"
+            width="150px"></el-table-column>
+
+        <el-table-column
+            label="创建时间"
+            prop="createdAt"
+            width="150px"
+            :formatter="formatDate"></el-table-column>
+
+        <el-table-column
+            label="更新时间"
+            prop="updatedAt"
+            width="150px"
+            :formatter="formatDate"></el-table-column>
+
+        <el-table-column
+            label="播放次数统计"
+            prop="musicPlayCount"
             width="150px"></el-table-column>
 
         <el-table-column
@@ -54,16 +96,6 @@
                     @keyup.enter="saveCategory(scope.row.categoryName)" />
         </el-table-column>
 
-        <el-table-column
-            label="创建时间"
-            prop="createdAt"
-            width="120px"
-            :formatter="formatDate"></el-table-column>
-
-        <el-table-column
-            label="更新时间"
-            prop="updatedAt"
-            width="120px"></el-table-column>
 
         <el-table-column
             fixed="right"
@@ -136,7 +168,7 @@ import {requestAll} from "@/utils/request"; // 引入 moment.js 用于时间格�
 export default {
   data() {
     return {
-      categoryList: [],
+      musicList: [],
       currentPage: 1, // 当前页数
       pageSize: 10, // 每页条数
       total: 0, // 总条数
@@ -169,22 +201,22 @@ export default {
     Download() {
       return Download
     },
-    pagedCategories() {
+    pagedMusicList() {
       const start = (this.currentPage - 1) * this.pageSize;
       const end = start + this.pageSize;
-      return this.categoryList.slice(start, end);
+      return this.musicList.slice(start, end);
     },
     totalPages() {
-      console.log(`总页数为: ${Math.ceil(this.categoryList.length / this.pageSize)}`)
-      return Math.ceil(this.categoryList.length / this.pageSize) * 10;
+      console.log(`总页数为: ${Math.ceil(this.musicList.length / this.pageSize)}`)
+      return Math.ceil(this.musicList.length / this.pageSize) * 10;
     },
     totalRowsCount() {
-      console.log(`总数据量数目为: ${Math.ceil(this.categoryList.length)}`)
-      return Math.ceil(this.categoryList.length);
+      console.log(`总数据量数目为: ${Math.ceil(this.musicList.length)}`)
+      return Math.ceil(this.musicList.length);
     },
   },
   mounted() {
-    this.fetchCategoryList();
+    this.fetchMusicList();
   },
   methods: {
 
@@ -195,13 +227,13 @@ export default {
       this.currentPage = page;
     },
 
-    fetchCategoryList() {
-      requestAll.get('categories')
+    fetchMusicList() {
+      requestAll.get('music')
           .then(response => {
-            this.categoryList = response.data.data;
+            this.musicList = response.data.data;
           })
           .catch(error => {
-            console.error('Error fetching categories:', error);
+            console.error('Error fetching music:', error);
           });
     },
     formatDate(row, column, cellValue) {
