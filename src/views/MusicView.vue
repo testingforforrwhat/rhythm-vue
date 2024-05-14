@@ -82,8 +82,9 @@
             :formatter="formatDate"></el-table-column>
 
         <el-table-column
-            label="播放次数统计"
-            prop="musicPlayCount"
+            fixed="right"
+            label="本周播放次数统计"
+            prop="musicPlayCountWeek"
             width="150px"></el-table-column>
 
         <el-table-column
@@ -111,6 +112,13 @@
             </el-button>
             <el-button @click="playAudio(scope.row)" style="padding: 3px" size="small">Play Audio</el-button>
             <audio ref="audio" @play="incrementPlayCount"></audio>
+
+            <button @click="playAudio_test(scope.row)">Play Audio_test</button>
+
+            <div>
+              <audio controls :src="audioSrc" @play="onPlay"></audio>
+            </div>
+
           </template>
         </el-table-column>
 
@@ -192,12 +200,15 @@ export default {
         createdAt: '',
         updatedAt: '',
         musicPlayCount:'',
+        musicPlayCountWeek:'',
       },
 
       dialogVisible: false,
       categoryForm: {
         categoryName: ''
-      }
+      },
+
+      audioSrc: '',
 
     };
   },
@@ -224,8 +235,54 @@ export default {
   },
   mounted() {
     this.fetchMusicList();
+    this.fetchAudio('example.mp3');
   },
   methods: {
+    async playAudio_test(music) {
+      try {
+        music.musicPlayCountWeek++
+        console.log(music.musicId)
+        const response = await axios.get('http://localhost:8080/api/audio/'+music.musicId, {
+          contentType: 'application/octet-stream',
+          responseType: 'json'
+        });
+
+        console.log([response.data.data])
+        const audioBlob = new Blob([response.data.data], { type: 'audio/mpeg' });
+        console.log(audioBlob)
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        const audio = new Audio(audioUrl);
+        await audio.play();
+      } catch (error) {
+        console.error('Error playing audio:', error);
+      }
+    },
+    playAudio() {
+      const audio = this.$refs.audio;
+      audio.src = this.audioUrl;
+      audio.play();
+    },
+    incrementPlayCount() {
+      axios.post('http://localhost:8080/api/increment-play-count', {
+        songId: 1 // 假设歌曲ID为1
+      });
+    },
+
+    fetchAudio(filename) {
+      axios({
+        url: `http://localhost:8080/api/audio/${filename}`,
+        method: 'GET',
+        responseType: 'blob',  // 重要：确保响应类型为 blob
+      }).then(response => {
+        this.audioSrc = URL.createObjectURL(response.data);
+      }).catch(error => {
+        console.error('Error fetching audio:', error);
+      });
+    },
+    onPlay() {
+      console.log('Audio is playing...');
+    },
 
     handleSizeChange(size) {
       this.pageSize = size;
