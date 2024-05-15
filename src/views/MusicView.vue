@@ -2,31 +2,7 @@
   <div>
     <h1>Music List</h1>
 
-    <div>
 
-      <el-upload
-          :show-file-list="false"
-          :before-upload="beforeUpload"
-          :on-success="onSuccess"
-          :on-error="onError"
-          :disabled="importDataDisabled"
-          style="display: inline-flex;margin-right: 8px"
-          action="/api/basic/import">
-
-        <el-button :disabled="importDataDisabled" type="success" :icon="importDataBtnIcon">
-          {{importDataBtnText}}
-        </el-button>
-
-      </el-upload>
-
-      <el-button type="success" @click="exportData" :icon="Download">
-        导出数据
-      </el-button>
-
-      <el-button type="primary" @click="ShowaddCategoryView" :icon="Plus">
-        添加分类
-      </el-button>
-    </div>
 
     <div>
       <el-table
@@ -86,16 +62,6 @@
             label="本周播放次数统计"
             prop="musicPlayCountWeek"
             width="150px"></el-table-column>
-
-        <el-table-column
-            label="分类名称"
-            prop="categoryName"
-            width="150px"
-            v-slot="scope">
-          <el-input v-if="scope.row.editing"
-                    v-model="scope.row.categoryName"
-                    @keyup.enter="saveCategory(scope.row.categoryName)" />
-        </el-table-column>
 
 
         <el-table-column
