@@ -115,6 +115,11 @@
 
             <button @click="playAudio_test(scope.row)">Play Audio_test</button>
 
+            <audio controls>
+              <source src="/audio/song01.mp3" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+
             <div>
               <audio controls :src="audioSrc" @play="onPlay"></audio>
             </div>
