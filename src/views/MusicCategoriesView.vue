@@ -158,7 +158,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import moment from 'moment';
 import {Download, Plus} from "@element-plus/icons-vue";
 import {requestAll} from "@/utils/request"; // 引入 moment.js 用于时间格式化
@@ -244,7 +243,7 @@ export default {
       const formData = new FormData();
       formData.append('categoryName', this.categoryForm.categoryName);
 
-      axios.post(
+      requestAll.post(
           'categories',
           {'categoryName': this.categoryForm.categoryName})
           .then(response => {
@@ -288,7 +287,7 @@ export default {
       const formData = new FormData();
       formData.append('categoryId', category.categoryId);
       formData.append('categoryName', category.categoryName);
-      axios.patch('categories', formData)
+      requestAll.patch('categories', formData)
           .then(response => {
             console.log('Category updated successfully:', response.data);
             category.editing = false; // Turn off editing mode
@@ -314,7 +313,7 @@ export default {
 
       console.log('Deleting category with ID:', category.categoryId);
 
-      axios.delete("categories/" + category.categoryId)
+      requestAll.delete("categories/" + category.categoryId)
           .then(response => {
             console.log('Category deleted successfully:', response.data);
             // Handle success response
