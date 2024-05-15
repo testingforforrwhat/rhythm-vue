@@ -245,7 +245,7 @@ export default {
       formData.append('categoryName', this.categoryForm.categoryName);
 
       axios.post(
-          'http://127.0.0.1:8001/api/categories',
+          'categories',
           {'categoryName': this.categoryForm.categoryName})
           .then(response => {
             console.log('Category added successfully:', response.data);
@@ -288,7 +288,7 @@ export default {
       const formData = new FormData();
       formData.append('categoryId', category.categoryId);
       formData.append('categoryName', category.categoryName);
-      axios.patch('http://127.0.0.1:8001/api/categories', formData)
+      axios.patch('categories', formData)
           .then(response => {
             console.log('Category updated successfully:', response.data);
             category.editing = false; // Turn off editing mode
@@ -314,7 +314,7 @@ export default {
 
       console.log('Deleting category with ID:', category.categoryId);
 
-      axios.delete("http://127.0.0.1:8001/api/categories/" + category.categoryId)
+      axios.delete("categories/" + category.categoryId)
           .then(response => {
             console.log('Category deleted successfully:', response.data);
             // Handle success response
