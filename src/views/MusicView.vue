@@ -213,7 +213,7 @@ export default {
       try {
         music.musicPlayCountWeek++
         console.log(music.musicId)
-        const response = await axios.get('http://localhost:8080/api/audio/'+music.musicId, {
+        const response = await requestAll.get('audio/'+music.musicId, {
           contentType: 'application/octet-stream',
           responseType: 'json'
         });
