@@ -82,7 +82,8 @@
             <button @click="playAudio_test(scope.row)">Play Audio_test</button>
 
             <audio controls>
-              <source src="@/audio/song01.wav" type="audio/mpeg">
+              <source src="@/audio/song01.wav"
+                      type="audio/mpeg">
               Your browser does not support the audio element.
             </audio>
 
@@ -219,10 +220,11 @@ export default {
           responseType: 'json'
         });
 
-        console.log([response.data.data])
+        console.log('response.data.data:', [response.data.data])
         const audioBlob = new Blob([response.data.data], { type: 'audio/mpeg' });
-        console.log(audioBlob)
+        console.log('audioBlob:', audioBlob)
         const audioUrl = URL.createObjectURL(audioBlob);
+        console.log('audioUrl:', audioUrl)
 
         const audio = new Audio(audioUrl);
         await audio.play();
