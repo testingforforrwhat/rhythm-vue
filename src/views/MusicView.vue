@@ -87,9 +87,13 @@
               Your browser does not support the audio element.
             </audio>
 
-            <div>
-              <audio controls :src="audioUrl" @play="playAudio_test(scope.row)"></audio>
-            </div>
+            <audio controls>
+              <source :src="audioUrl"
+                      type="audio/mpeg"
+                      @play="playAudio_test(scope.row)">
+              Your browser does not support the audio element.
+            </audio>
+
 
           </template>
         </el-table-column>
