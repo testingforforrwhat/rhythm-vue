@@ -76,7 +76,9 @@
             </audio>
 
             <div>
-            <audio controls @click= "playAudio" v-if="audioUrl">
+            <!-- https://www.runoob.com/jsref/dom-obj-audio.html -->
+            <!-- @play -->
+            <audio controls @play="playAudio_test(scope.row)" v-if="audioUrl">
               <source :src="audioTest"
                       type="audio/wav"
                       >
@@ -153,7 +155,7 @@ export default {
 
       audioSrc: '',
       audioUrl: '',
-      audioTest: 'https://audio04.dmhmusic.com/71_53_T10052122270_128_4_1_0_sdk-cpm/cn/0311/M00/75/BA/ChAKC12hSzSAOawRADq0vt10Kl8819.mp3?xcode=1e0c6065eaa16affde7c29015051174c3b0c933'
+      audioTest: 'https://audio04.dmhmusic.com/71_53_T10052122270_128_4_1_0_sdk-cpm/cn/0311/M00/75/BA/ChAKC12hSzSAOawRADq0vt10Kl8819.mp3?xcode=c7b414287b12e594de7d16b44cff129b2cbdc8f'
 
     };
   },
