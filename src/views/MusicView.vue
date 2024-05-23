@@ -192,16 +192,19 @@ export default {
           .then(response => {
             console.log('response.data.data:', [response.data.data])
 
-            const decodedAudioData = atob([response.data.data]); // 解码音频数据
-            const audioUrl = `data:audio/mpeg;base64,${decodedAudioData}`; // 创建音频 URL
+            // const decodedAudioData = atob(response.data.data); // 解码音频数据
+            // const audioUrl = `data:audio/mpeg;base64,${decodedAudioData}`; // 创建音频 URL
 
-            // const audioBlob = new Blob([response.data.data], { type: 'audio/mpeg' });
-            // console.log('audioBlob:', audioBlob)
-            // this.audioUrl = URL.createObjectURL(audioBlob);
+            // 假设 audioData 是您的音频数据字节数组
+            let uint8Array = new Uint8Array(response.data.data);
+            let arrayBuffer = uint8Array.buffer;
+            const audioBlob = new Blob(arrayBuffer, { type: 'audio/wav' });
+            console.log('audioBlob:', audioBlob)
+            this.audioUrl = URL.createObjectURL(audioBlob);
 
-            console.log('audioUrl:', audioUrl)
+            console.log('audioUrl:', this.audioUrl)
 
-            const audio = new Audio(audioUrl);
+            const audio = new Audio(this.audioUrl);
             audio.play();
           })
           .catch(error => {
