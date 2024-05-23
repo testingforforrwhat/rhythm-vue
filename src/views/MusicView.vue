@@ -79,7 +79,7 @@
             <!-- https://www.runoob.com/jsref/dom-obj-audio.html -->
             <!-- @play -->
             <audio controls @play="playAudio_test(scope.row)" v-if="audioUrl">
-              <source :src="audioTest"
+              <source :src="audioUrl"
                       type="audio/wav"
                       >
               Your browser does not support the audio element.
@@ -188,7 +188,7 @@ export default {
     },
     playAudio_test(music) {
 
-      requestAll.get('audio/'+music.musicId)
+      requestAll.get('playAudio/'+music.musicId)
           .then(response => {
 
             music.musicPlayCountWeek++;
