@@ -12,14 +12,14 @@ export default {
   </footer>
 </template>
 
-<style>
+<style scoped>
 .footer {
-  background-color: #333;
+  background-color: #545c64;
   color: #fff;
   padding: 15px 0;
   text-align: center;
   width: 100%;
-  position: fixed;
+  position: relative;
   bottom: 0;
 }
 
