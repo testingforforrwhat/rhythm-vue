@@ -69,9 +69,6 @@
             label="操作">
           <template v-slot="scope">
 
-
-            <button @click="playAudio_test(scope.row)">Play Audio_test</button>
-
             <audio controls>
               <source src="@/audio/song01.wav"
                       type="audio/mpeg">
@@ -79,17 +76,14 @@
             </audio>
 
             <div>
-            <audio controls @play="playAudio_test(scope.row)" v-if="audioUrl">
-              <source :src="audioUrl"
-                      type="audio/mpeg"
+            <audio controls @click= "playAudio" v-if="audioUrl">
+              <source :src="audioTest"
+                      type="audio/wav"
                       >
               Your browser does not support the audio element.
             </audio>
-            <button @click="playAudio_test(scope.row)">播放音频</button>
+            <el-button @click="playAudio_test(scope.row)" v-if="!audioUrl" style="padding: 3px" size="small">播放音频</el-button>
             </div>
-
-            <el-button @click="playAudio_test(scope.row)" style="padding: 3px" size="small">Play Audio</el-button>
-            <audio ref="audio" @play="playAudio_test(scope.row)"></audio>
 
           </template>
         </el-table-column>
@@ -159,6 +153,7 @@ export default {
 
       audioSrc: '',
       audioUrl: '',
+      audioTest: 'https://audio04.dmhmusic.com/71_53_T10052122270_128_4_1_0_sdk-cpm/cn/0311/M00/75/BA/ChAKC12hSzSAOawRADq0vt10Kl8819.mp3?xcode=1e0c6065eaa16affde7c29015051174c3b0c933'
 
     };
   },
@@ -183,53 +178,77 @@ export default {
   },
   methods: {
 
+    playAudio() {
+      const audio =new Audio(this.audioTest);
+      audio.play();
+      this.music.musicPlayCountWeek++;
+      console.log(this.music.musicId);
+    },
     playAudio_test(music) {
 
-      requestAll.get('audio/'+music.musicId, {
-        contentType: 'application/octet-stream',
-        responseType: 'json'
-      })
+      requestAll.get('audio/'+music.musicId)
           .then(response => {
-            console.log('response.data.data:', [response.data.data])
+
+            music.musicPlayCountWeek++;
+            console.log(music.musicId);
+
+            console.log('response.data.data:', response.data.data)
 
             // const decodedAudioData = atob(response.data.data); // 解码音频数据
             // const audioUrl = `data:audio/mpeg;base64,${decodedAudioData}`; // 创建音频 URL
 
+            // 从后端接收的字符串数据
+            let audioDataString = response.data.data;
+            // 去掉字符串两端的方括号和中间的空格
+            const cleanString = audioDataString.substring(1, audioDataString.length - 1).replace(/\s+/g, '');
+
+           // 分割字符串，将其转换为数字数组
+            const byteArray = cleanString.split(',').map(Number);
+
+            console.log(byteArray); // 输出转换后的数组
             // 假设 audioData 是您的音频数据字节数组
-            let uint8Array = new Uint8Array(response.data.data);
-            let arrayBuffer = uint8Array.buffer;
-            const audioBlob = new Blob(arrayBuffer, { type: 'audio/wav' });
+            let uint8Array = new Uint8Array(byteArray);
+
+            console.log('arrayBuffer:', uint8Array)
+            const audioBlob = new Blob([uint8Array], { type: 'audio/wav' });
             console.log('audioBlob:', audioBlob)
             this.audioUrl = URL.createObjectURL(audioBlob);
-
+            // // 转换为 Data URL
+            // const reader = new FileReader();
+            // reader.readAsDataURL(audioBlob);
+            // this.audioUrl = reader.result; // 将 Data URL 存储到 audioUrl 变量中
+            // console.log('reader.result:', reader.result)
             console.log('audioUrl:', this.audioUrl)
 
-            const audio = new Audio(this.audioUrl);
-            audio.play();
+            // const audio = new Audio(this.audioUrl);
+            // audio.play();
+
+            return this.audioUrl;
+            
           })
           .catch(error => {
             console.error('Error fetching audioBlob:', error);
           });
 
-      /*try {
-        music.musicPlayCountWeek++
-        console.log(music.musicId)
-        const response = await requestAll.get('audio/'+music.musicId, {
-          contentType: 'application/octet-stream',
-          responseType: 'json'
-        });
-
-        console.log('response.data.data:', [response.data.data])
-        const audioBlob = new Blob([response.data.data], { type: 'audio/mpeg' });
-        console.log('audioBlob:', audioBlob)
-        const audioUrl = URL.createObjectURL(audioBlob);
-        console.log('audioUrl:', audioUrl)
-
-        const audio = new Audio(audioUrl);
-        await audio.play();
-      } catch (error) {
-        console.error('Error playing audio:', error);
-      }*/
+      // try {
+      //   music.musicPlayCountWeek++
+      //   console.log(music.musicId)
+      //   const response = await requestAll.get('audio/'+music.musicId, {
+      //     contentType: 'application/octet-stream',
+      //     responseType: 'json'
+      //   });
+      //
+      //   console.log('response.data.data:', [response.data.data])
+      //   const audioBlob = new Blob([response.data.data], { type: 'audio/mpeg' });
+      //   console.log('audioBlob:', audioBlob)
+      //   const audioUrl = URL.createObjectURL(audioBlob);
+      //   console.log('audioUrl:', audioUrl)
+      //
+      //   const audio = new Audio(audioUrl);
+      //   await audio.play();
+      // } catch (error) {
+      //   console.error('Error playing audio:', error);
+      // }
     },
     handleSizeChange(size) {
       this.pageSize = size;
