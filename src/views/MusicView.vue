@@ -63,7 +63,36 @@
             prop="musicPlayCountWeek"
             width="150px"></el-table-column>
 
+        <el-table-column
+            fixed="right"
+            width="290"
+            label="操作">
+          <template v-slot="scope">
 
+
+            <button @click="playAudio_test(scope.row)">Play Audio_test</button>
+
+            <audio controls>
+              <source src="@/audio/song01.wav"
+                      type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+
+            <div>
+            <audio controls @play="playAudio_test(scope.row)" v-if="audioUrl">
+              <source :src="audioUrl"
+                      type="audio/mpeg"
+                      >
+              Your browser does not support the audio element.
+            </audio>
+            <button @click="playAudio_test(scope.row)">播放音频</button>
+            </div>
+
+            <el-button @click="playAudio_test(scope.row)" style="padding: 3px" size="small">Play Audio</el-button>
+            <audio ref="audio" @play="playAudio_test(scope.row)"></audio>
+
+          </template>
+        </el-table-column>
 
 
       </el-table>
@@ -154,7 +183,51 @@ export default {
   },
   methods: {
 
+    playAudio_test(music) {
 
+      requestAll.get('audio/'+music.musicId, {
+        contentType: 'application/octet-stream',
+        responseType: 'json'
+      })
+          .then(response => {
+            console.log('response.data.data:', [response.data.data])
+
+            const decodedAudioData = atob([response.data.data]); // 解码音频数据
+            const audioUrl = `data:audio/mpeg;base64,${decodedAudioData}`; // 创建音频 URL
+
+            // const audioBlob = new Blob([response.data.data], { type: 'audio/mpeg' });
+            // console.log('audioBlob:', audioBlob)
+            // this.audioUrl = URL.createObjectURL(audioBlob);
+
+            console.log('audioUrl:', audioUrl)
+
+            const audio = new Audio(audioUrl);
+            audio.play();
+          })
+          .catch(error => {
+            console.error('Error fetching audioBlob:', error);
+          });
+
+      /*try {
+        music.musicPlayCountWeek++
+        console.log(music.musicId)
+        const response = await requestAll.get('audio/'+music.musicId, {
+          contentType: 'application/octet-stream',
+          responseType: 'json'
+        });
+
+        console.log('response.data.data:', [response.data.data])
+        const audioBlob = new Blob([response.data.data], { type: 'audio/mpeg' });
+        console.log('audioBlob:', audioBlob)
+        const audioUrl = URL.createObjectURL(audioBlob);
+        console.log('audioUrl:', audioUrl)
+
+        const audio = new Audio(audioUrl);
+        await audio.play();
+      } catch (error) {
+        console.error('Error playing audio:', error);
+      }*/
+    },
     handleSizeChange(size) {
       this.pageSize = size;
     },
