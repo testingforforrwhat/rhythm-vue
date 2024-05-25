@@ -1,7 +1,7 @@
 <template>
   <div>
 
-  <HeaderView></HeaderView>
+  <HeaderView class="HeaderView"></HeaderView>
 
   <router-view></router-view>
 
@@ -30,6 +30,11 @@ export default {
 </script>
 
 <style>
+
+.HeaderView{
+  width: 100%;
+}
+
 /*#app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
