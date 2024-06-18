@@ -80,8 +80,8 @@
             <!-- https://www.runoob.com/jsref/dom-obj-audio.html -->
             <!-- @play -->
             <!-- 音频播放控件，当存在 audioUrl 时显示 -->
-            <audio controls @play="playAudio_test(scope.row)" v-if="audioUrlLoaded">
-              <source :src="audioUrl"
+            <audio controls @play="playAudio_test(scope.row)" v-if="scope.row.audioUrl">
+              <source :src="scope.row.audioUrl"
                       type="audio/wav"
                       >
               Your browser does not support the audio element.
@@ -168,7 +168,7 @@ export default {
       audioUrlLoaded: false, // 初始值为 false
       scope: {
         row: {
-          musicId: null  // 示例音频 URL，可以根据实际情况设置
+          audioUrl: null  // 示例音频 URL，可以根据实际情况设置
         }
       },
       audioTest: 'https://audio04.dmhmusic.com/71_53_T10052122270_128_4_1_0_sdk-cpm/cn/0311/M00/75/BA/ChAKC12hSzSAOawRADq0vt10Kl8819.mp3?xcode=c7b414287b12e594de7d16b44cff129b2cbdc8f'
