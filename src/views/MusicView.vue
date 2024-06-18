@@ -89,7 +89,7 @@
 
             <!-- 播放音频按钮，在 audioUrl 为空时显示 -->
             <el-button @click="playAudio_test(scope.row)"
-                       v-if="!audioUrlLoaded"
+                       v-if="!scope.row.buttonVisual"
                        style="padding: 3px"
                        size="small">
               播放音频
@@ -168,7 +168,8 @@ export default {
       audioUrlLoaded: false, // 初始值为 false
       scope: {
         row: {
-          audioUrl: null  // 示例音频 URL，可以根据实际情况设置
+          audioUrl: null,  // 示例音频 URL，可以根据实际情况设置
+          buttonVisual: false,
         }
       },
       audioTest: 'https://audio04.dmhmusic.com/71_53_T10052122270_128_4_1_0_sdk-cpm/cn/0311/M00/75/BA/ChAKC12hSzSAOawRADq0vt10Kl8819.mp3?xcode=c7b414287b12e594de7d16b44cff129b2cbdc8f'
@@ -240,8 +241,10 @@ export default {
 
         // 强制重新加载音频元素
         this.audioUrlLoaded = false;
+        row.buttonVisual = false;
         await this.$nextTick(); // wait for the DOM update cycle
         this.audioUrlLoaded = true;
+        row.buttonVisual = true;
 
         // 打印日志以确认 URL 已更新
         console.log('音频 URL 已更新:', this.audioUrl);
