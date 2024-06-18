@@ -69,11 +69,11 @@
             label="操作">
           <template v-slot="scope">
 
-            <audio controls>
-              <source src="@/audio/song01.wav"
-                      type="audio/mpeg">
-              Your browser does not support the audio element.
-            </audio>
+<!--            <audio controls>-->
+<!--              <source src="@/audio/song01.wav"-->
+<!--                      type="audio/mpeg">-->
+<!--              Your browser does not support the audio element.-->
+<!--            </audio>-->
 
             <div>
 
