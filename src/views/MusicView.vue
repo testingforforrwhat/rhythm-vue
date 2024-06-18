@@ -76,15 +76,25 @@
             </audio>
 
             <div>
+
             <!-- https://www.runoob.com/jsref/dom-obj-audio.html -->
             <!-- @play -->
-            <audio controls @play="playAudio_test(scope.row)" v-if="audioUrl">
+            <!-- 音频播放控件，当存在 audioUrl 时显示 -->
+            <audio controls @play="playAudio_test(scope.row)" v-if="audioUrlLoaded">
               <source :src="audioUrl"
                       type="audio/wav"
                       >
               Your browser does not support the audio element.
             </audio>
-            <el-button @click="playAudio_test(scope.row)" v-if="!audioUrl" style="padding: 3px" size="small">播放音频</el-button>
+
+            <!-- 播放音频按钮，在 audioUrl 为空时显示 -->
+            <el-button @click="playAudio_test(scope.row)"
+                       v-if="!audioUrlLoaded"
+                       style="padding: 3px"
+                       size="small">
+              播放音频
+            </el-button>
+
             </div>
 
           </template>
@@ -154,7 +164,13 @@ export default {
       },
 
       audioSrc: '',
-      audioUrl: '',
+      audioUrl: null,  // 初始值为 null
+      audioUrlLoaded: false, // 初始值为 false
+      scope: {
+        row: {
+          musicId: null  // 示例音频 URL，可以根据实际情况设置
+        }
+      },
       audioTest: 'https://audio04.dmhmusic.com/71_53_T10052122270_128_4_1_0_sdk-cpm/cn/0311/M00/75/BA/ChAKC12hSzSAOawRADq0vt10Kl8819.mp3?xcode=c7b414287b12e594de7d16b44cff129b2cbdc8f'
 
     };
@@ -186,13 +202,61 @@ export default {
       this.music.musicPlayCountWeek++;
       console.log(this.music.musicId);
     },
-    playAudio_test(music) {
 
-      requestAll.get('playAudio/'+music.musicId)
+    async playAudio_test(row) {
+      try {
+        // 假设这是一个异步操作，通过 API 获取音频 URL
+        const response = await requestAll.get('playAudio/'+row.musicId)
+
+        row.musicPlayCountWeek++;
+        console.log(row.musicId);
+
+        console.log('response.data.data:', response.data.data)
+
+        // const decodedAudioData = atob(response.data.data); // 解码音频数据
+        // const audioUrl = `data:audio/mpeg;base64,${decodedAudioData}`; // 创建音频 URL
+
+        // 从后端接收的字符串数据
+        let audioDataString = response.data.data;
+        // 去掉字符串两端的方括号和中间的空格
+        const cleanString = audioDataString.substring(1, audioDataString.length - 1).replace(/\s+/g, '');
+
+        // 分割字符串，将其转换为数字数组
+        const byteArray = cleanString.split(',').map(Number);
+
+        console.log(byteArray); // 输出转换后的数组
+        // 假设 audioData 是您的音频数据字节数组
+        let uint8Array = new Uint8Array(byteArray);
+
+        console.log('arrayBuffer:', uint8Array)
+        const audioBlob = new Blob([uint8Array], { type: 'audio/wav' });
+        console.log('audioBlob:', audioBlob)
+        row.audioUrl = URL.createObjectURL(audioBlob);
+
+
+          // 确保这里的路径根据您的 API 响应格式正确
+        // 设置音频 URL
+        this.audioUrl = row.audioUrl;
+
+        // 强制重新加载音频元素
+        this.audioUrlLoaded = false;
+        await this.$nextTick(); // wait for the DOM update cycle
+        this.audioUrlLoaded = true;
+
+        // 打印日志以确认 URL 已更新
+        console.log('音频 URL 已更新:', this.audioUrl);
+      } catch (error) {
+        console.error('获取音频 URL 失败:', error);
+      }
+    },
+
+    async playAudio_test_(row) {
+
+      await requestAll.get('playAudio/'+row.musicId)
           .then(response => {
 
-            music.musicPlayCountWeek++;
-            console.log(music.musicId);
+            row.musicPlayCountWeek++;
+            console.log(row.musicId);
 
             console.log('response.data.data:', response.data.data)
 
@@ -214,20 +278,27 @@ export default {
             console.log('arrayBuffer:', uint8Array)
             const audioBlob = new Blob([uint8Array], { type: 'audio/wav' });
             console.log('audioBlob:', audioBlob)
-            this.audioUrl = URL.createObjectURL(audioBlob);
+            row.audioUrl = URL.createObjectURL(audioBlob);
+
+            // 更新 audioUrl 以触发 audio 元素重新渲染
+            this.audioUrl = row.audioUrl;
+
             // // 转换为 Data URL
             // const reader = new FileReader();
             // reader.readAsDataURL(audioBlob);
             // this.audioUrl = reader.result; // 将 Data URL 存储到 audioUrl 变量中
             // console.log('reader.result:', reader.result)
-            console.log('audioUrl:', this.audioUrl)
+            console.log('播放音频的audioUrl:', this.audioUrl)
 
             // const audio = new Audio(this.audioUrl);
             // audio.play();
 
             return this.audioUrl;
-            
-          })
+
+          }
+
+
+          )
           .catch(error => {
             console.error('Error fetching audioBlob:', error);
           });
