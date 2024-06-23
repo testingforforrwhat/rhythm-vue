@@ -31,11 +31,19 @@
 
       </el-upload>
 
-      <el-button type="success" @click="exportData" :icon="Download">
+      <el-button
+          type="success"
+          @click="exportData"
+          :icon="Download"
+          style="display: inline-flex;margin-right: 8px">
         导出数据
       </el-button>
 
-      <el-button type="primary" @click="ShowaddCategoryView" :icon="Plus">
+      <el-button
+          type="primary"
+          @click="ShowaddCategoryView"
+          :icon="Plus"
+          style="display: inline-flex;margin-right: 8px">
         添加分类
       </el-button>
     </div>
