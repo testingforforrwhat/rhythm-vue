@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="MusicCategoriesView">
     <h1>Category List</h1>
 <!--    <ul>-->
 <!--      <li v-for="category in paginatedCategories" :key="category.categoryId">-->
@@ -45,6 +45,7 @@
             :data="pagedCategories"
             stripe
             border
+            height="350px"
             style="width: 100%"
               >
 
@@ -347,3 +348,8 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+
+</style>

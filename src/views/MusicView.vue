@@ -9,6 +9,7 @@
           :data="pagedMusicList"
           stripe
           border
+          height="450"
           style="width: 100%"
       >
 
@@ -363,3 +364,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+</style>
