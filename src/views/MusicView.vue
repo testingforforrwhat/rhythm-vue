@@ -66,6 +66,27 @@
 
         <el-table-column
             fixed="right"
+            width="320"
+            label="操作">
+          <template v-slot="scope">
+          <div>
+
+            <!-- https://www.runoob.com/jsref/dom-obj-audio.html -->
+            <!-- @play -->
+            <!-- 音频播放控件，当存在 audioUrl 时显示 -->
+            <audio ref="audioPlayer" controls @play="playAudio_test(scope.row)" v-if="scope.row.audioUrl">
+              <source :src="scope.row.audioUrl"
+                      type="audio/wav"
+              >
+              Your browser does not support the audio element.
+            </audio>
+
+          </div>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+            fixed="right"
             width="290"
             label="操作">
           <template v-slot="scope">
@@ -78,15 +99,9 @@
 
             <div>
 
-            <!-- https://www.runoob.com/jsref/dom-obj-audio.html -->
-            <!-- @play -->
-            <!-- 音频播放控件，当存在 audioUrl 时显示 -->
-            <audio ref="audioPlayer" controls @play="playAudio_test(scope.row)" v-if="scope.row.audioUrl">
-              <source :src="scope.row.audioUrl"
-                      type="audio/wav"
-                      >
-              Your browser does not support the audio element.
-            </audio>
+
+
+            <el-button-group>
 
             <!-- 播放音频按钮，在 audioUrl 为空时显示 -->
             <el-button @click="playAudio_test(scope.row)"
@@ -95,6 +110,20 @@
                        size="small">
               播放音频
             </el-button>
+
+              <el-button @click="upload(scope.row)"
+                         style="padding: 3px"
+                         size="small">
+                upload
+              </el-button>
+
+              <el-button @click="download(scope.row)"
+                         style="padding: 3px"
+                         size="small">
+                download
+              </el-button>
+
+            </el-button-group>
 
             </div>
 
