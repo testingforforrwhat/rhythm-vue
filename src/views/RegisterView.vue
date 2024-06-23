@@ -1,4 +1,6 @@
 <template>
+  <div>
+
   <el-form :model="registerForm" status-icon :rules="rules" ref="registerForm" label-width="100px" class="register-form">
     <el-form-item label="用户名" prop="username">
       <el-input v-model="registerForm.username"></el-input>
@@ -21,6 +23,8 @@
       <el-button @click="resetForm('registerForm')">重置</el-button>
     </el-form-item>
   </el-form>
+
+  </div>
 </template>
 
 <script>
