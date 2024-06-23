@@ -80,7 +80,7 @@
             <!-- https://www.runoob.com/jsref/dom-obj-audio.html -->
             <!-- @play -->
             <!-- 音频播放控件，当存在 audioUrl 时显示 -->
-            <audio controls @play="playAudio_test(scope.row)" v-if="scope.row.audioUrl">
+            <audio ref="audioPlayer" controls @play="playAudio_test(scope.row)" v-if="scope.row.audioUrl">
               <source :src="scope.row.audioUrl"
                       type="audio/wav"
                       >
@@ -245,6 +245,9 @@ export default {
         await this.$nextTick(); // wait for the DOM update cycle
         this.audioUrlLoaded = true;
         row.buttonVisual = true;
+
+        const audioPlayer = this.$refs.audioPlayer;
+        audioPlayer.load(); // 强制重新加载音频文件
 
         // 打印日志以确认 URL 已更新
         console.log('音频 URL 已更新:', this.audioUrl);
