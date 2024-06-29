@@ -64,7 +64,13 @@
             prop="musicPlayCountWeek"
             width="150px">
 
-          <!-- 使用 v-slot:header 插槽自定义表头 -->
+          <!-- 使用 v-slot:header 插槽自定义表头
+
+           v-slot:header 用于自定义表头内容，将模版中的 header 插槽内容替换成 <span> 标签，并添加 title 属性以实现悬浮提示。
+
+           https://element-plus.org/zh-CN/component/tooltip.html
+
+           -->
           <template v-slot:header>
             <span class="tooltip" title="This is a tooltip: (每天同步一次)">本周播放次数统计</span>
           </template>
