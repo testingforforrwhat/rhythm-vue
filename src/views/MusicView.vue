@@ -72,7 +72,11 @@
 
            -->
           <template v-slot:header>
-            <span class="tooltip" title="This is a tooltip: (每天同步一次)">本周播放次数统计</span>
+            <span class="tooltip" title="This is a tooltip: (每天同步一次)">本周播放次数统计
+
+            <el-icon><Notification /></el-icon>
+
+            </span>
           </template>
 
 
@@ -172,9 +176,11 @@
 
 <script>
 import moment from 'moment';
-import {requestAll} from "@/utils/request"; // 引入 moment.js 用于时间格式化
+import {requestAll} from "@/utils/request";
+import {Notification} from "@element-plus/icons-vue"; // 引入 moment.js 用于时间格式化
 
 export default {
+  components: {Notification},
   data() {
     return {
       musicList: [],
