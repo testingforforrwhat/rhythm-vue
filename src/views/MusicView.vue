@@ -74,7 +74,7 @@
           <template v-slot:header>
             <span class="tooltip" title="This is a tooltip: (每天同步一次)">本周播放次数统计
 
-            <el-icon><Notification /></el-icon>
+            <el-icon color="red"><Notification /></el-icon>
 
             </span>
           </template>
