@@ -60,7 +60,7 @@
 
         <el-table-column
             fixed="right"
-            label="本周播放次数统计"
+            label="本周播放次数统计(每天同步一次)"
             prop="musicPlayCountWeek"
             width="150px"></el-table-column>
 
