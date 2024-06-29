@@ -62,7 +62,15 @@
             fixed="right"
             label="本周播放次数统计(每天同步一次)"
             prop="musicPlayCountWeek"
-            width="150px"></el-table-column>
+            width="150px">
+
+          <!-- 使用 v-slot:header 插槽自定义表头 -->
+          <template v-slot:header>
+            <span class="tooltip" title="This is a tooltip: (每天同步一次)">本周播放次数统计</span>
+          </template>
+
+
+        </el-table-column>
 
         <el-table-column
             fixed="right"
