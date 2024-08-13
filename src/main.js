@@ -14,4 +14,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
 
+// 视图 挂载 模型数据
 app.use(router).use(ElementPlus).mount('#app')
