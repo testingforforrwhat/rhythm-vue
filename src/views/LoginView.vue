@@ -26,6 +26,7 @@
 import {requestAll} from "@/utils/request";
 
 export default {
+  name: 'LoginView',
   data() {
     var validateUsername = (rule, value, callback) => {
       if (!value) {
