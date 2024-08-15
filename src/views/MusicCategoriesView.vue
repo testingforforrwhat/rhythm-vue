@@ -172,6 +172,11 @@ import {Download, Plus} from "@element-plus/icons-vue";
 import {requestAll} from "@/utils/request"; // 引入 moment.js 用于时间格式化
 
 export default {
+  name: "MusicCategoriesView",
+  //   接收组件标签上的属性值
+  props: null,
+  //   是否要继承组件标签上的属性
+  inheritAttrs: false,
   data() {
     return {
       categoryList: [],
