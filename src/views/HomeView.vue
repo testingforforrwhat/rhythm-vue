@@ -10,6 +10,8 @@
 <script>
 import AdsView from "@/views/AdsView.vue";
 
+
+// 导出一个vue实例
 export default {
   name: "HomeView",
   components: {AdsView}

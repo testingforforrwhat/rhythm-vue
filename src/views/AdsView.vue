@@ -7,6 +7,7 @@
 
 <script>
 
+// 导出一个vue实例
 export default {
   // 注册组件标签
   name: "AdsView",
