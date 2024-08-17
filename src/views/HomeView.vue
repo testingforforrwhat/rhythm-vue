@@ -11,7 +11,7 @@
 import AdsView from "@/views/AdsView.vue";
 
 
-// 导出一个vue实例
+// 导出一个vue实例 object
 export default {
   name: "HomeView",
   components: {AdsView}

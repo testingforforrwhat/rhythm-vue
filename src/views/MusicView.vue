@@ -180,7 +180,7 @@ import {requestAll} from "@/utils/request";
 import {Notification} from "@element-plus/icons-vue"; // 引入 moment.js 用于时间格式化
 
 
-// 导出一个vue实例
+// 导出一个vue实例 object
 export default {
   name: "MusicView",
   //   接收组件标签上的属性值

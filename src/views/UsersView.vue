@@ -1,6 +1,6 @@
 <script>
 
-// 导出一个vue实例
+// 导出一个vue实例 object
 export default {
   name: "UsersView"
 }

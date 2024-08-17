@@ -32,7 +32,7 @@ import axios from "axios";
 import router from "@/router";
 
 
-// 导出一个vue实例
+// 导出一个vue实例 object
 export default {
   data() {
     var validateUsername = (rule, value, callback) => {
