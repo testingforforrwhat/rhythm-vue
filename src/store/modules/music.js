@@ -1,7 +1,7 @@
 
 
 /*  登录 业务模块 的 子仓库  */
-import {fetchMusicList} from "@/data/music";
+// import {fetchMusicList} from "@/data/music";
 
 export default {
     // 是否开启独立命名空间
@@ -51,20 +51,20 @@ export default {
     // 各组件实例的(异步)方法 迁移到这儿
     actions: {
 
-        fetchMusicList(context) {
-            console.log( context );
-            // context.state 获取当前仓库的state状态数据
-            // context.commit 载荷调用当前仓库的mutations同步方法
-            // context.dispatch 载荷调用当前仓库的actions异步方法
-            fetchMusicList()
-                .then(response => {
-                    context.state.musicList = response.data.data;
-                    console.log( 'context.state.musicList:',context.state.musicList );
-                })
-                .catch(error => {
-                    console.error('Error fetching music:', error);
-                });
-        },
+        // fetchMusicList(context) {
+        //     console.log( context );
+        //     // context.state 获取当前仓库的state状态数据
+        //     // context.commit 载荷调用当前仓库的mutations同步方法
+        //     // context.dispatch 载荷调用当前仓库的actions异步方法
+        //     fetchMusicList()
+        //         .then(response => {
+        //             context.state.musicList = response.data.data;
+        //             console.log( 'context.state.musicList:',context.state.musicList );
+        //         })
+        //         .catch(error => {
+        //             console.error('Error fetching music:', error);
+        //         });
+        // },
 
     }
 }
