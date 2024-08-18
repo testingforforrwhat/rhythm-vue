@@ -3,6 +3,13 @@ import { createStore } from 'vuex'
 import login from "@/store/modules/login";
 import music from "@/store/modules/music";
 
+import Vue from 'vue'
+import Vuex from 'vuex'
+import getters from './getters'
+
+Vue.use(Vuex)
+
+
 // 创建 总仓库 并且导出
 export default createStore({
     // 各组件实例的data 迁移到这儿
@@ -23,5 +30,6 @@ export default createStore({
     modules: {
         login,
         music,
-    }
+    },
+    getters
 })
