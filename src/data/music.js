@@ -1,3 +1,5 @@
 import {requestAll} from "@/utils/request";
 
-export const fetchMusicList = () => requestAll.get('music')
+export const fetchMusicList = function (){
+    return requestAll.get('music')
+}
