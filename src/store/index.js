@@ -1,5 +1,5 @@
 // 从 vuex 模块 导入 创建仓库的方法
-import { createStore } from 'vuex'
+// import { createStore } from 'vuex'
 import login from "@/store/modules/login";
 import music from "@/store/modules/music";
 
@@ -11,7 +11,8 @@ Vue.use(Vuex)
 
 
 // 创建 总仓库 并且导出
-export default createStore({
+// export default createStore({
+const store = new Vuex.Store({
     // 各组件实例的data 迁移到这儿
     state: {
         music,
@@ -33,3 +34,5 @@ export default createStore({
     },
     getters
 })
+
+export default store
