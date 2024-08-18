@@ -26,6 +26,8 @@ import FooterView from "@/components/Footer.vue";
 一个模块只能有一个默认导出，因此export default在一个模块中只能使用一次。*/
 
 // 导出一个vue实例 object
+// 根实例
+// json对象
 export default {
   name: 'App',
   components: {
