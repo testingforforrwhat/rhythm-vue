@@ -1,4 +1,5 @@
 <template>
+
   <div id="app">
 
   <HeaderView class="HeaderView"></HeaderView>
@@ -8,15 +9,11 @@
   <FooterView></FooterView>
 
   </div>
-<!--  <img alt="Vue logo" src="./assets/logo.png">-->
-<!--  <HelloWorld msg="Welcome to Your Vue.js App"/>-->
-<!--  <musicCategoriesList msg="musicCategoriesList"/>-->
+
 </template>
 
-<script>
-// import HelloWorld from './components/HelloWorld.vue'
-// import musicCategoriesList from "@/components/musicCategories/musicCategoriesList.vue";
 
+<script>
 import HeaderView from "@/components/Header.vue";
 import FooterView from "@/components/Footer.vue";
 
