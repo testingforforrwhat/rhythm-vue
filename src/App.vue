@@ -2,10 +2,12 @@
 
   <div>
 
+  <!--    header 整个项目固定的部分-->
   <HeaderView class="HeaderView"></HeaderView>
 
   <router-view></router-view>
 
+  <!--    footer 整个项目固定的部分-->
   <FooterView></FooterView>
 
   </div>
