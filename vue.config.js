@@ -2,6 +2,7 @@ const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
   // 开发环境 服务器端配置
+  // 开发环境 反向代理配置
   devServer: {
     // 反向代理
     proxy: {
