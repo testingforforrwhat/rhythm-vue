@@ -249,6 +249,8 @@ export default {
       return Math.ceil(this.musicList.length);
     },
   },
+
+  // 挂载视图完毕后的生命周期方法
   mounted() {
     this.fetchMusicList();
   },
