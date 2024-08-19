@@ -188,6 +188,17 @@ export default {
   //   是否要继承组件标签上的属性
   inheritAttrs: false,
   components: {Notification},
+
+  /**
+   *
+   * 在组件选项对象中有一个data选项，该选项是一个函数，
+   *
+   * Vue在创建组件实例时会调用该函数。
+   * data()函数可以返回一个数据对象，应用程序实例本身会代理该数据对象中的所有数据。
+   *
+   *
+   * @returns {{small: boolean, categoryForm: {categoryName: string}, audioSrc: string, importDataDisabled: boolean, importDataBtnIcon: string, pageSize: number, importDataBtnText: string, audioUrlLoaded: boolean, total: number, audioUrl: null, music: {createdAt: string, musicId: string, artist: string, album: string, musicPlayCount: string, musicFile: string, musicPlayCountWeek: string, title: string, categoryId: string, updatedAt: string}, dialogVisible: boolean, background: boolean, scope: {row: {audioUrl: null, buttonVisual: boolean}}, disabled: boolean, currentPage: number, musicList: *[], audioTest: string}}
+   */
   data() {
     return {
       musicList: [],
