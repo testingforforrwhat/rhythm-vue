@@ -29,7 +29,7 @@ import getters from './getters'
 
 /**
  *
- * 创建 Vuex Store
+ * 创建 Vuex Store，用于定义你的应用状态、突变、动作和 getters。
  *
  * @type {Store<{music: {mutations: {}, state: {small: boolean, categoryForm: {categoryName: string}, audioSrc: string, importDataDisabled: boolean, importDataBtnIcon: string, pageSize: number, importDataBtnText: string, total: number, audioUrl: string, music: {createdAt: string, musicId: string, artist: string, album: string, musicPlayCount: string, musicFile: string, musicPlayCountWeek: string, title: string, categoryId: string, updatedAt: string}, dialogVisible: boolean, background: boolean, disabled: boolean, currentPage: number, musicList: []}, actions: {}, namespaced: boolean}}>}
  */
