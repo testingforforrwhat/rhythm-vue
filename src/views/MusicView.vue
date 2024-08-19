@@ -176,7 +176,7 @@
 
 <script>
 import moment from 'moment';
-import {requestAll} from "@/utils/request";
+import {request} from "@/utils/request";
 import {Notification} from "@element-plus/icons-vue";
 import {fetchMusicList} from "@/data/music"; // 引入 moment.js 用于时间格式化
 
@@ -281,7 +281,7 @@ export default {
     async playAudio_test(row) {
       try {
         // 假设这是一个异步操作，通过 API 获取音频 URL
-        const response = await requestAll.get('playAudio/'+row.musicId)
+        const response = await request.get('playAudio/'+row.musicId)
 
         row.musicPlayCountWeek++;
         console.log(row.musicId);
@@ -332,7 +332,7 @@ export default {
 
     async playAudio_test_(row) {
 
-      await requestAll.get('playAudio/'+row.musicId)
+      await request.get('playAudio/'+row.musicId)
           .then(response => {
 
             row.musicPlayCountWeek++;
@@ -386,7 +386,7 @@ export default {
       // try {
       //   music.musicPlayCountWeek++
       //   console.log(music.musicId)
-      //   const response = await requestAll.get('audio/'+music.musicId, {
+      //   const response = await request.get('audio/'+music.musicId, {
       //     contentType: 'application/octet-stream',
       //     responseType: 'json'
       //   });
@@ -411,7 +411,7 @@ export default {
     },
 
     // fetchMusicList() {
-    //   requestAll.get('music')
+    //   request.get('music')
     //       .then(response => {
     //         this.musicList = response.data.data;
     //       })

@@ -15,7 +15,7 @@ import axios from "axios";
 
 
 // 创建axios异步请求对象 进行初始化 配置
-const requestAll = axios.create(
+const request = axios.create(
     {
         baseURL: "/api/",
         // 发送 post/put/patch/delete 请求之前 对 data 参数进行统一处理
@@ -26,7 +26,7 @@ const requestAll = axios.create(
 )
 
 // 配置 axios 请求 拦截器
-requestAll.interceptors.request.use( config => {
+request.interceptors.request.use( config => {
     // 将当前登录的用户的token令牌 设置到 request header
     config.headers.Authorization = localStorage.getItem("token")
     return config
@@ -34,4 +34,4 @@ requestAll.interceptors.request.use( config => {
 
 
 // 导出
-export {requestAll}
+export {request}

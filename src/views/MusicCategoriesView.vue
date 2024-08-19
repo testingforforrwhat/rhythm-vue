@@ -169,7 +169,7 @@
 <script>
 import moment from 'moment';
 import {Download, Plus} from "@element-plus/icons-vue";
-import {requestAll} from "@/utils/request"; // 引入 moment.js 用于时间格式化
+import {request} from "@/utils/request"; // 引入 moment.js 用于时间格式化
 
 
 // 导出一个vue实例 object
@@ -241,7 +241,7 @@ export default {
     },
 
     fetchCategoryList() {
-      requestAll.get('categories')
+      request.get('categories')
           .then(response => {
             this.categoryList = response.data.data;
           })
@@ -259,7 +259,7 @@ export default {
       const formData = new FormData();
       formData.append('categoryName', this.categoryForm.categoryName);
 
-      requestAll.post(
+      request.post(
           'categories',
           {'categoryName': this.categoryForm.categoryName})
           .then(response => {
@@ -303,7 +303,7 @@ export default {
       const formData = new FormData();
       formData.append('categoryId', category.categoryId);
       formData.append('categoryName', category.categoryName);
-      requestAll.patch('categories', formData)
+      request.patch('categories', formData)
           .then(response => {
             console.log('Category updated successfully:', response.data);
             category.editing = false; // Turn off editing mode
@@ -329,7 +329,7 @@ export default {
 
       console.log('Deleting category with ID:', category.categoryId);
 
-      requestAll.delete("categories/" + category.categoryId)
+      request.delete("categories/" + category.categoryId)
           .then(response => {
             console.log('Category deleted successfully:', response.data);
             // Handle success response

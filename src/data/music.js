@@ -1,7 +1,7 @@
-import {requestAll} from "@/utils/request";
+import {request} from "@/utils/request";
 
 export const fetchMusicList = function (){
-    return requestAll.get('music')
+    return request.get('music')
         .then(response => {
             this.musicList = response.data.data;
         })

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import {requestAll} from "@/utils/request";
+import {request} from "@/utils/request";
 
 
 // 导出一个vue实例 object
@@ -72,7 +72,7 @@ export default {
           formData.append('userLoginName', this.loginForm.username);
           formData.append('userLoginPass', this.loginForm.password);
 
-          requestAll.post('users/login', formData)
+          request.post('users/login', formData)
               .then(response => {
                 console.log('Login successful:', response.data);
                 // After successful login, set isLoggedIn to true and store logged in user
