@@ -177,7 +177,8 @@
 <script>
 import moment from 'moment';
 import {requestAll} from "@/utils/request";
-import {Notification} from "@element-plus/icons-vue"; // 引入 moment.js 用于时间格式化
+import {Notification} from "@element-plus/icons-vue";
+import {fetchMusicList} from "@/data/music"; // 引入 moment.js 用于时间格式化
 
 
 // 导出一个vue实例 object
@@ -266,7 +267,7 @@ export default {
 
   // 挂载视图完毕后的生命周期方法
   mounted() {
-    this.fetchMusicList();
+    fetchMusicList();
   },
   methods: {
 
@@ -409,15 +410,15 @@ export default {
       this.currentPage = page;
     },
 
-    fetchMusicList() {
-      requestAll.get('music')
-          .then(response => {
-            this.musicList = response.data.data;
-          })
-          .catch(error => {
-            console.error('Error fetching music:', error);
-          });
-    },
+    // fetchMusicList() {
+    //   requestAll.get('music')
+    //       .then(response => {
+    //         this.musicList = response.data.data;
+    //       })
+    //       .catch(error => {
+    //         console.error('Error fetching music:', error);
+    //       });
+    // },
     formatDate(row, column, cellValue) {
       return moment(cellValue).format('YYYY-MM-DD HH:mm:ss'); // 格式化日期时间
     },
