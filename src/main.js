@@ -18,4 +18,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 // 视图 挂载 模型数据
+// 在你的 Vue 实例中导入并使用 Vuex Store
 app.use(store).use(router).use(ElementPlus).mount('#app')
