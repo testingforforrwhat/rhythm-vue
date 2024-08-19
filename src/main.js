@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import store from "@/store";
+import store from "@/store";  // 导入我们创建的 store
 import router from './router'
 
 import ElementPlus from 'element-plus'
