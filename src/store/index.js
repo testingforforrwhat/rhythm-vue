@@ -10,6 +10,12 @@ import getters from './getters'
 Vue.use(Vuex)
 
 
+/**
+ *
+ * 创建 Vuex Store
+ *
+ * @type {Store<{music: {mutations: {}, state: {small: boolean, categoryForm: {categoryName: string}, audioSrc: string, importDataDisabled: boolean, importDataBtnIcon: string, pageSize: number, importDataBtnText: string, total: number, audioUrl: string, music: {createdAt: string, musicId: string, artist: string, album: string, musicPlayCount: string, musicFile: string, musicPlayCountWeek: string, title: string, categoryId: string, updatedAt: string}, dialogVisible: boolean, background: boolean, disabled: boolean, currentPage: number, musicList: []}, actions: {}, namespaced: boolean}}>}
+ */
 // 创建 总仓库 并且导出
 // export default createStore({
 const store = new Vuex.Store({
