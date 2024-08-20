@@ -72,7 +72,7 @@ export default {
           formData.append('userLoginName', this.loginForm.username);
           formData.append('userLoginPass', this.loginForm.password);
 
-          request.post('users/login', formData)
+          request.post('springSecurity/login', formData)
               .then(response => {
                 console.log('Login successful:', response.data);
                 // After successful login, set isLoggedIn to true and store logged in user
