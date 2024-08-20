@@ -26,7 +26,7 @@
 // import {request} from "@/utils/request";
 import axios from "axios";
 
-const qs = require('qs');
+
 
 
 // 导出一个vue实例 object
@@ -76,13 +76,16 @@ export default {
           // formData.append('adminPass', this.loginForm.password);
 
           // request.post('springSecurity/login', formData)
+          /**
+           * https://axios-http.com/docs/api_intro  'post'
+           */
           axios.create()({
             url : 'api/springSecurity/login',
             method : "post",
-            data : qs.stringify( {
-            "adminName": this.loginForm.username,
-                "adminPass": this.loginForm.password
-          } )
+            data : {
+                adminName: this.loginForm.username,
+                adminPass: this.loginForm.password
+          }
           }, )
               .then(response => {
                 console.log('Login successful:', response.data);
