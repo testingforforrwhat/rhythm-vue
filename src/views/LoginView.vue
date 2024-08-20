@@ -23,7 +23,10 @@
 </template>
 
 <script>
-import {request} from "@/utils/request";
+// import {request} from "@/utils/request";
+import axios from "axios";
+
+const qs = require('qs');
 
 
 // 导出一个vue实例 object
@@ -73,10 +76,14 @@ export default {
           // formData.append('adminPass', this.loginForm.password);
 
           // request.post('springSecurity/login', formData)
-          request.post('springSecurity/login', {
+          axios.create()({
+            url : 'springSecurity/login',
+            method : "post",
+            data : qs.stringify( {
             "adminName": this.loginForm.username,
-            "adminPass": this.loginForm.password
-          })
+                "adminPass": this.loginForm.password
+          } )
+          }, )
               .then(response => {
                 console.log('Login successful:', response.data);
                 // After successful login, set isLoggedIn to true and store logged in user
