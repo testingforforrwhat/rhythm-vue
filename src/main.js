@@ -26,4 +26,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
  * this.$store.dispatch('incrementAsync')  - methods:
  * this.$store.getters  - computed:
  */
-app.use(store).use(router).use(ElementPlus).mount('#app')
+app.use(store)
+    .use(router)
+    .use(ElementPlus)
+    .mount('#app')
