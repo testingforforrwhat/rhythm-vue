@@ -32,6 +32,12 @@ request.interceptors.request.use( config => {
     return config
 })
 
+// 配置 axios 返回 拦截器
+request.interceptors.response.use( response => {
+
+    return response
+})
+
 
 // 导出
 export {request}
