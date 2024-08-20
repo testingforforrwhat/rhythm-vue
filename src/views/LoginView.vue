@@ -77,7 +77,7 @@ export default {
 
           // request.post('springSecurity/login', formData)
           axios.create()({
-            url : 'springSecurity/login',
+            url : 'api/springSecurity/login',
             method : "post",
             data : qs.stringify( {
             "adminName": this.loginForm.username,
