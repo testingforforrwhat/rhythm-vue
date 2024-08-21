@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="MusicView-container">
     <h1>Music List</h1>
 
 
 
-    <div>
+    <div class="MusicList-container">
       <el-table
           :data="pagedMusicList"
           stripe
@@ -442,4 +442,26 @@ export default {
 
 <style scoped>
 
+.MusicView-container {
+  display: flex;
+  padding-bottom: 60px;
+}
+
+.MusicView-container h1 {
+  text-align: center;
+}
+.MusicView-container .MusicList-container {
+  max-width: 1000px;
+  height: 500px; /* 固定高度 */
+  overflow-y: auto; /* 启用垂直滚动 */
+  overflow-x: auto;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff; /* 白色背景 */
+  border: 1px solid #e0e0e0; /* 浅灰色边框 */
+  border-radius: 10px; /* 圆角 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 轻微的阴影 */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* 增加过渡效果 */
+
+}
 </style>
