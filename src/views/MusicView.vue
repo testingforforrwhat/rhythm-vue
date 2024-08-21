@@ -451,6 +451,9 @@ export default {
   text-align: center;
 }
 .MusicView-container .MusicList-container {
+  display: flex; /* 开启弹性布局*/
+  flex-direction: column;  /* 主轴方向设置为列方向自上向下排列*/
+
   max-width: 1000px;
   height: 500px; /* 固定高度 */
   overflow-y: auto; /* 启用垂直滚动 */
