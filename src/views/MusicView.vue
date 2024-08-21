@@ -1,10 +1,13 @@
 <template>
   <div class="MusicView-container">
-    <h1>Music List</h1>
+
 
 
 
     <div class="MusicList-container">
+
+      <h1>Music List</h1>
+
       <el-table
           :data="pagedMusicList"
           stripe
