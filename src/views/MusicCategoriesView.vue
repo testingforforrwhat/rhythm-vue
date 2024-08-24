@@ -241,7 +241,7 @@ export default {
     },
 
     fetchCategoryList() {
-      request.get('categories')
+      request.get('categories/queryAll')
           .then(response => {
             this.categoryList = response.data.data;
           })
