@@ -27,8 +27,17 @@ const request = axios.create(
 
 // 配置 axios 请求 拦截器
 request.interceptors.request.use( config => {
-    // 将当前登录的用户的token令牌 设置到 request header
-    config.headers.Authorization = localStorage.getItem("token")
+    // // 将当前登录的用户的token令牌 设置到 request header
+    // config.headers.Authorization = localStorage.getItem("token")
+
+    // Retrieve the token from localStorage
+    const token = localStorage.getItem('token');
+
+    // If the token exists, set it in the request headers
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+
     return config
 })
 
