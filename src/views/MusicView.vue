@@ -273,6 +273,7 @@ export default {
   // 挂载视图完毕后的生命周期方法
   mounted() {
     fetchMusicList();
+    this.fetchMusicList()
   },
   methods: {
 
@@ -415,15 +416,15 @@ export default {
       this.currentPage = page;
     },
 
-    // fetchMusicList() {
-    //   request.get('music')
-    //       .then(response => {
-    //         this.musicList = response.data.data;
-    //       })
-    //       .catch(error => {
-    //         console.error('Error fetching music:', error);
-    //       });
-    // },
+    fetchMusicList() {
+      request.get('music/queryAll')
+          .then(response => {
+            this.musicList = response.data.data;
+          })
+          .catch(error => {
+            console.error('Error fetching music:', error);
+          });
+    },
     formatDate(row, column, cellValue) {
       return moment(cellValue).format('YYYY-MM-DD HH:mm:ss'); // 格式化日期时间
     },
