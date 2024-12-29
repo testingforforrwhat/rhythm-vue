@@ -71,7 +71,7 @@
 
         <el-menu-item index="8">
           <router-link to="/register" class="nav-link">
-            <el-icon><UserPlus /></el-icon>
+            <el-icon><Plus /></el-icon>
             <span>注册</span>
           </router-link>
         </el-menu-item>
@@ -90,7 +90,7 @@ import {
   Menu,
   User,
   Key,
-  UserPlus
+  Plus
 } from '@element-plus/icons-vue'
 
 export default {
@@ -105,7 +105,7 @@ export default {
     Menu,
     User,
     Key,
-    UserPlus
+    Plus
   },
 
   setup() {
