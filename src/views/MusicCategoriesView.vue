@@ -1,370 +1,387 @@
 <template>
-  <div class="MusicCategoriesView">
-    <h1>Category List</h1>
-<!--    <ul>-->
-<!--      <li v-for="category in paginatedCategories" :key="category.categoryId">-->
-<!--&lt;!&ndash;        {{ category.categoryName }}&ndash;&gt;-->
-<!--&lt;!&ndash;        <button @click="editCategory(category)">Edit</button>&ndash;&gt;-->
-<!--&lt;!&ndash;        <button @click="deleteCategory(category.categoryId)">Delete</button>&ndash;&gt;-->
-<!--        <span v-if="!category.editing">{{ category.categoryName }}</span>-->
-<!--        <input v-else v-model="category.categoryName" @keyup.enter="saveCategory(category)" />-->
-<!--        <button v-if="!category.editing" @click="enableEditing(category)">Edit</button>-->
-<!--        <button v-if="category.editing" @click="saveCategory(category)">Save</button>-->
-<!--        <button @click="deleteCategory(category.categoryId)">Delete</button>-->
-<!--      </li>-->
+  <div class="music-categories-view">
+    <!-- 页面标题区域 -->
+    <div class="page-header">
+      <h1>音乐分类管理</h1>
+    </div>
 
-
-    <div>
-
+    <!-- 工具栏区域 -->
+    <div class="toolbar">
+      <!-- 导入数据按钮 -->
       <el-upload
+          class="upload-button"
           :show-file-list="false"
           :before-upload="beforeUpload"
           :on-success="onSuccess"
           :on-error="onError"
           :disabled="importDataDisabled"
-          style="display: inline-flex;margin-right: 8px"
-          action="/api/basic/import">
-
-        <el-button :disabled="importDataDisabled" type="success" :icon="importDataBtnIcon">
-          {{importDataBtnText}}
+          action="/api/basic/import"
+      >
+        <el-button
+            :disabled="importDataDisabled"
+            type="success"
+            :icon="importDataBtnIcon"
+        >
+          {{ importDataBtnText }}
         </el-button>
-
       </el-upload>
 
+      <!-- 导出数据按钮 -->
       <el-button
           type="success"
           @click="exportData"
           :icon="Download"
-          style="display: inline-flex;margin-right: 8px">
+      >
         导出数据
       </el-button>
 
+      <!-- 添加分类按钮 -->
       <el-button
           type="primary"
-          @click="ShowaddCategoryView"
+          @click="showAddCategoryDialog"
           :icon="Plus"
-          style="display: inline-flex;margin-right: 8px">
+      >
         添加分类
       </el-button>
     </div>
 
-    <div>
-        <el-table
-            :data="pagedCategories"
-            stripe
-            border
-            height="350px"
-            style="width: 100%"
+    <!-- 分类列表表格 -->
+    <div class="table-container">
+      <el-table
+          :data="pagedCategories"
+          stripe
+          border
+          height="350px"
+      >
+        <!-- 选择列 -->
+        <el-table-column type="selection" width="55" />
+
+        <!-- 分类ID列 -->
+        <el-table-column
+            label="分类ID"
+            prop="categoryId"
+            width="120"
+        />
+
+        <!-- 分类名称列 -->
+        <el-table-column
+            label="分类名称"
+            prop="categoryName"
+            min-width="150"
+        >
+          <template #default="{ row }">
+            <el-input
+                v-if="row.editing"
+                v-model="row.categoryName"
+                @keyup.enter="saveCategory(row)"
+                placeholder="请输入分类名称"
+            />
+            <span v-else>{{ row.categoryName }}</span>
+          </template>
+        </el-table-column>
+
+        <!-- 创建时间列 -->
+        <el-table-column
+            label="创建时间"
+            prop="createdAt"
+            width="180"
+            :formatter="formatDate"
+        />
+
+        <!-- 更新时间列 -->
+        <el-table-column
+            label="更新时间"
+            prop="updatedAt"
+            width="180"
+            :formatter="formatDate"
+        />
+
+        <!-- 操作列 -->
+        <el-table-column
+            fixed="right"
+            label="操作"
+            width="250"
+        >
+          <template #default="{ row }">
+            <div class="operation-buttons">
+              <el-button
+                  @click="toggleEditing(row)"
+                  size="small"
+                  type="primary"
               >
-
-          <el-table-column
-              type="selection"></el-table-column>
-
-          <el-table-column
-              label="分类ID"
-              prop="categoryId"
-              width="150px"></el-table-column>
-
-          <el-table-column
-              label="分类名称"
-              prop="categoryName"
-              width="150px"
-              v-slot="scope">
-            <el-input v-if="scope.row.editing"
-                      v-model="scope.row.categoryName"
-                      @keyup.enter="saveCategory(scope.row.categoryName)" />
-          </el-table-column>
-
-          <el-table-column
-              label="创建时间"
-              prop="createdAt"
-              width="120px"
-              :formatter="formatDate"></el-table-column>
-
-          <el-table-column
-              label="更新时间"
-              prop="updatedAt"
-              width="120px"></el-table-column>
-
-          <el-table-column
-              fixed="right"
-              width="250"
-              label="操作">
-            <template v-slot="scope">
-              <el-input v-if="scope.row.editing" v-model="scope.row.categoryName" @keyup.enter="saveCategory(scope.row.categoryName)" />
-              <el-button @click="toggleEditing(scope.row)" style="padding: 3px" size="small">
-                {{ scope.row.editing ? '保存' : '编辑' }}
+                {{ row.editing ? '保存' : '编辑' }}
               </el-button>
-              <el-button style="padding: 3px" size="small" type="primary">查看详细资料</el-button>
-              <el-button @click="deleteCategory(scope.row)" style="padding: 3px" size="small" type="danger">删除
+              <el-button
+                  @click="deleteCategory(row)"
+                  size="small"
+                  type="danger"
+              >
+                删除
               </el-button>
-            </template>
-          </el-table-column>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
 
-        </el-table>
-
-    <div class="demo-pagination-block">
+    <!-- 分页器 -->
+    <div class="pagination-container">
       <el-pagination
           v-model:current-page="currentPage"
           v-model:page-size="pageSize"
-          v-model:total="totalRowsCount"
+          :total="totalRowsCount"
           :page-sizes="[10, 20, 30, 40]"
-          :small="small"
-          :disabled="disabled"
-          :background="background"
           layout="total, sizes, prev, pager, next, jumper"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-          @prev-click="previousPage"
-          @next-click="nextPage"
       />
     </div>
 
-      <el-dialog
-          :title="title"
-          v-model="dialogVisible"
-          width="80%">
-        <div>
-          <el-form :model="categoryForm" ref="categoryForm">
-
-            <el-row>
-              <el-col :span="6">
-                <el-form-item label="分类:" prop="categoryName">
-                  <el-input size="small" style="width: 150px" prefix-icon="el-icon-edit" v-model="categoryForm.categoryName"
-                            placeholder="请输入分类"></el-input>
-                </el-form-item>
-              </el-col>
-
-            </el-row>
-          </el-form>
+    <!-- 添加/编辑分类对话框 -->
+    <el-dialog
+        :title="dialogTitle"
+        v-model="dialogVisible"
+        width="500px"
+    >
+      <el-form
+          :model="categoryForm"
+          ref="categoryForm"
+          label-width="80px"
+      >
+        <el-form-item
+            label="分类名称"
+            prop="categoryName"
+            :rules="[
+            { required: true, message: '请输入分类名称', trigger: 'blur' },
+            { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+          ]"
+        >
+          <el-input
+              v-model="categoryForm.categoryName"
+              placeholder="请输入分类名称"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="submitCategory">确定</el-button>
         </div>
-        <span  class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="addCategory">确 定</el-button>
-  </span>
-      </el-dialog>
-
-    </div>
-
-
-
-
-<!--    </ul>-->
-
-<!--    <form @submit.prevent="addCategory">-->
-<!--      <label for="categoryName">Category Name:</label>-->
-<!--      <input type="text" id="categoryName" v-model="newCategory.categoryName">-->
-
-<!--      <button type="submit">Add Category</button>-->
-<!--    </form>-->
-
-<!--    <div>-->
-<!--      <button @click="previousPage" :disabled="currentPage === 1">Previous</button>-->
-<!--      <span>{{ currentPage }} / {{ totalPages }}</span>-->
-<!--      <button @click="nextPage" :disabled="currentPage === totalPages">Next</button>-->
-<!--    </div>-->
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import moment from 'moment';
-import {Download, Plus} from "@element-plus/icons-vue";
-import {request} from "@/utils/request"; // 引入 moment.js 用于时间格式化
+import { ref, computed } from 'vue'
+import { ElMessage } from 'element-plus'
+import moment from 'moment'
+// import { Download, Plus } from '@element-plus/icons-vue'
+import { request } from '@/utils/request'
 
-
-// 导出一个vue实例 object
 export default {
-  name: "MusicCategoriesView",
-  //   接收组件标签上的属性值
-  props: null,
-  //   是否要继承组件标签上的属性
-  inheritAttrs: false,
+  name: 'MusicCategoriesView',
+
+  setup() {
+    // 状态定义
+    const categoryList = ref([])
+    const currentPage = ref(1)
+    const pageSize = ref(10)
+    const dialogVisible = ref(false)
+    const categoryForm = ref({
+      categoryName: ''
+    })
+
+    // 计算属性
+    const pagedCategories = computed(() => {
+      const start = (currentPage.value - 1) * pageSize.value
+      const end = start + pageSize.value
+      return categoryList.value.slice(start, end)
+    })
+
+    const totalRowsCount = computed(() => categoryList.value.length)
+
+    return {
+      categoryList,
+      currentPage,
+      pageSize,
+      dialogVisible,
+      categoryForm,
+      pagedCategories,
+      totalRowsCount
+    }
+  },
+
   data() {
     return {
-      categoryList: [],
-      currentPage: 1, // 当前页数
-      pageSize: 10, // 每页条数
-      total: 0, // 总条数
-      small: false,
-      disabled: false,
-      background: false,
-
       importDataBtnText: '导入数据',
       importDataBtnIcon: 'Upload',
       importDataDisabled: false,
-
-      category: {
-        categoryId: 1,
-        categoryName: "test",
-        createdAt: 0,
-        updatedAt: 0,
-      },
-
-      dialogVisible: false,
-      categoryForm: {
-        categoryName: ''
-      }
-
-    };
-  },
-  computed: {
-    Plus() {
-      return Plus
-    },
-    Download() {
-      return Download
-    },
-    pagedCategories() {
-      const start = (this.currentPage - 1) * this.pageSize;
-      const end = start + this.pageSize;
-      return this.categoryList.slice(start, end);
-    },
-    totalPages() {
-      console.log(`总页数为: ${Math.ceil(this.categoryList.length / this.pageSize)}`)
-      return Math.ceil(this.categoryList.length / this.pageSize)*10;
-    },
-    totalRowsCount() {
-      console.log(`总数据量数目为: ${Math.ceil(this.categoryList.length)}`)
-      return Math.ceil(this.categoryList.length);
-    },
-  },
-  mounted() {
-    this.fetchCategoryList();
-  },
-  methods: {
-
-    handleSizeChange(size) {
-      this.pageSize = size;
-    },
-    handleCurrentChange(page) {
-      this.currentPage = page;
-    },
-
-    fetchCategoryList() {
-      request.get('categories/queryAll')
-          .then(response => {
-            this.categoryList = response.data.data;
-          })
-          .catch(error => {
-            console.error('Error fetching categories:', error);
-          });
-    },
-    formatDate(row, column, cellValue) {
-      return moment(cellValue).format('YYYY-MM-DD HH:mm:ss'); // 格式化日期时间
-    },
-    addCategory() {
-      // Implement add category functionality here
-      console.log('Adding a new category');
-
-      const formData = new FormData();
-      formData.append('categoryName', this.categoryForm.categoryName);
-
-      request.post(
-          'categories',
-          {'categoryName': this.categoryForm.categoryName})
-          .then(response => {
-            console.log('Category added successfully:', response.data);
-            // Handle success response
-            // Optionally, update the category list with the new data
-            // Manually update the category list by fetching the updated data
-            this.dialogVisible = false;
-            this.fetchCategoryList();
-          })
-          .catch(error => {
-            console.error('Error adding category:', error);
-            // Handle error
-          });
-
-    },
-    // enableEditing(category) {
-    //   this.categoryList = this.categoryList.map(c => {
-    //     if (c.categoryId === category.categoryId) {
-    //       return { ...c, editing: true };
-    //     }
-    //     return c;
-    //   });
-    // },
-    enableEditing(category) {
-      this.categoryList = this.categoryList.map(c => {
-        if (c.categoryId === category.categoryId) {
-          return { ...c, editing: true };
-        }
-        return c;
-      });
-    },
-    toggleEditing(category) {
-      if (category.editing) {
-        this.saveCategory(category);
-      } else {
-        this.enableEditing(category);
-      }
-    },
-    saveCategory(category) {
-      const formData = new FormData();
-      formData.append('categoryId', category.categoryId);
-      formData.append('categoryName', category.categoryName);
-      request.patch('categories', formData)
-          .then(response => {
-            console.log('Category updated successfully:', response.data);
-            category.editing = false; // Turn off editing mode
-            // Manually update the category list by fetching the updated data
-            this.fetchCategoryList();
-          })
-          .catch(error => {
-            console.error('Error updating category:', error);
-          });
-    },
-    editCategory(category) {
-      // Implement edit functionality here
-      console.log('Editing category:', category);
-    },
-    ShowaddCategoryView() {
-      this.emptyCategory();
-      this.title = '添加分类';
-
-      this.dialogVisible = true;
-    },
-    deleteCategory(category) {
-      // Implement delete functionality here
-
-      console.log('Deleting category with ID:', category.categoryId);
-
-      request.delete("categories/" + category.categoryId)
-          .then(response => {
-            console.log('Category deleted successfully:', response.data);
-            // Handle success response
-            // Manually update the category list by fetching the updated data
-            this.fetchCategoryList();
-          })
-          .catch(error => {
-            console.error('Error deleting category:', error);
-            // Handle error
-          });
-
-    },
-    previousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
-      }
-    },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
-      }
-    },
-    emptyCategory() {
-      this.category = {
-        categoryId: 1,
-        categoryName: "test",
-        createdAt: 0,
-        updatedAt: 0,
-      }
+      dialogTitle: '添加分类'
     }
   },
-};
+
+  mounted() {
+    this.fetchCategoryList()
+  },
+
+  methods: {
+    // 获取分类列表
+    async fetchCategoryList() {
+      try {
+        const response = await request.get('categories/queryAll')
+        this.categoryList = response.data.data
+      } catch (error) {
+        ElMessage.error('获取分类列表失败')
+        console.error('Error fetching categories:', error)
+      }
+    },
+
+    // 格式化日期
+    formatDate(row, column, cellValue) {
+      return moment(cellValue).format('YYYY-MM-DD HH:mm:ss')
+    },
+
+    // 显示添加分类对话框
+    showAddCategoryDialog() {
+      this.dialogTitle = '添加分类'
+      this.categoryForm = { categoryName: '' }
+      this.dialogVisible = true
+    },
+
+    // 提交分类表单
+    async submitCategory() {
+      try {
+        if (this.categoryForm.categoryId) {
+          await this.saveCategory(this.categoryForm)
+        } else {
+          await this.addCategory()
+        }
+        this.dialogVisible = false
+        await this.fetchCategoryList()
+        ElMessage.success('操作成功')
+      } catch (error) {
+        ElMessage.error('操作失败')
+        console.error('Error submitting category:', error)
+      }
+    },
+
+    // 添加分类
+    async addCategory() {
+      await request.post('categories', {
+        categoryName: this.categoryForm.categoryName
+      })
+    },
+
+    // 切换编辑状态
+    toggleEditing(category) {
+      if (category.editing) {
+        this.saveCategory(category)
+      } else {
+        this.categoryList = this.categoryList.map(c => ({
+          ...c,
+          editing: c.categoryId === category.categoryId
+        }))
+      }
+    },
+
+    // 保存分类
+    async saveCategory(category) {
+      try {
+        await request.patch('categories', {
+          categoryId: category.categoryId,
+          categoryName: category.categoryName
+        })
+        category.editing = false
+        await this.fetchCategoryList()
+        ElMessage.success('保存成功')
+      } catch (error) {
+        ElMessage.error('保存失败')
+        console.error('Error saving category:', error)
+      }
+    },
+
+    // 删除分类
+    async deleteCategory(category) {
+      try {
+        await request.delete(`categories/${category.categoryId}`)
+        await this.fetchCategoryList()
+        ElMessage.success('删除成功')
+      } catch (error) {
+        ElMessage.error('删除失败')
+        console.error('Error deleting category:', error)
+      }
+    },
+
+    // 处理分页大小变化
+    handleSizeChange(size) {
+      this.pageSize = size
+    },
+
+    // 处理当前页变化
+    handleCurrentChange(page) {
+      this.currentPage = page
+    }
+  }
+}
 </script>
 
 <style scoped>
+.music-categories-view {
+  padding: 20px;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
 
+.page-header {
+  margin-bottom: 20px;
+}
 
+.page-header h1 {
+  color: #303133;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.table-container {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.operation-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.dialog-footer {
+  text-align: right;
+  margin-top: 20px;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .toolbar {
+    flex-direction: column;
+  }
+
+  .operation-buttons {
+    flex-direction: column;
+  }
+}
 </style>
