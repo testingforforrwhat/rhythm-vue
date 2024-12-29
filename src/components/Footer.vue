@@ -6,57 +6,63 @@
       <div class="footer-content">
         <!-- 品牌信息 -->
         <div class="footer-brand">
-          <h3>Rhythm</h3>
-          <p>让音乐触动心灵</p>
+          <h3 class="brand-title">Rhythm</h3>
+          <p class="brand-slogan">让音乐触动心灵</p>
+          <p class="brand-description">
+            我们致力于为用户提供最优质的音乐体验，
+            让每个人都能找到属于自己的音乐世界。
+          </p>
         </div>
 
         <!-- 链接区域 -->
         <div class="footer-links">
-          <div class="links-group">
-            <h4>关于我们</h4>
+          <div class="links-group" v-for="(group, index) in linkGroups" :key="index">
+            <h4>{{ group.title }}</h4>
             <ul>
-              <li><a href="/about">公司介绍</a></li>
-              <li><a href="/team">团队成员</a></li>
-              <li><a href="/contact">联系方式</a></li>
-            </ul>
-          </div>
-
-          <div class="links-group">
-            <h4>帮助中心</h4>
-            <ul>
-              <li><a href="/faq">常见问题</a></li>
-              <li><a href="/support">技术支持</a></li>
-              <li><a href="/feedback">意见反馈</a></li>
-            </ul>
-          </div>
-
-          <div class="links-group">
-            <h4>法律信息</h4>
-            <ul>
-              <li><a href="/privacy">隐私政策</a></li>
-              <li><a href="/terms">服务条款</a></li>
-              <li><a href="/copyright">版权声明</a></li>
+              <li v-for="(link, linkIndex) in group.links" :key="linkIndex">
+                <a :href="link.url" @mouseover="handleLinkHover">
+                  {{ link.text }}
+                </a>
+              </li>
             </ul>
           </div>
         </div>
 
-        <!-- 社交媒体图标 -->
-        <div class="social-media">
-          <a href="#" class="social-icon" title="微信">
-            <i class="el-icon-wechat"></i>
-          </a>
-          <a href="#" class="social-icon" title="微博">
-            <i class="el-icon-weibo"></i>
-          </a>
-          <a href="#" class="social-icon" title="QQ">
-            <i class="el-icon-qq"></i>
-          </a>
+        <!-- 社交媒体和订阅 -->
+        <div class="footer-social">
+          <h4>关注我们</h4>
+          <!-- 社交媒体图标 -->
+          <div class="social-icons">
+            <a v-for="(social, index) in socialMedia"
+               :key="index"
+               :href="social.url"
+               :title="social.name"
+               class="social-icon"
+               target="_blank"
+               rel="noopener noreferrer">
+              <i :class="social.icon"></i>
+            </a>
+          </div>
+          <!-- 订阅区域 -->
+          <div class="newsletter">
+            <h4>订阅最新资讯</h4>
+            <div class="newsletter-form">
+              <input
+                  type="email"
+                  v-model="email"
+                  placeholder="请输入您的邮箱"
+                  @keyup.enter="handleSubscribe"
+              >
+              <button @click="handleSubscribe">订阅</button>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- 版权信息 -->
       <div class="footer-bottom">
         <p>&copy; {{ currentYear }} Rhythm. All rights reserved.</p>
+        <p class="icp">京ICP备xxxxxxxx号</p>
       </div>
     </div>
   </footer>
@@ -66,17 +72,75 @@
 export default {
   name: "FooterView",
 
-  // 计算属性
-  computed: {
-    /**
-     * 获取当前年份
-     * @returns {number} 当前年份
-     */
-    currentYear() {
-      return new Date().getFullYear();
-    },
+  data() {
+    return {
+      email: '', // 订阅邮箱
+      // 链接组数据
+      linkGroups: [
+        {
+          title: '关于我们',
+          links: [
+            { text: '公司介绍', url: '/about' },
+            { text: '团队成员', url: '/team' },
+            { text: '联系方式', url: '/contact' }
+          ]
+        },
+        {
+          title: '帮助中心',
+          links: [
+            { text: '常见问题', url: '/faq' },
+            { text: '技术支持', url: '/support' },
+            { text: '意见反馈', url: '/feedback' }
+          ]
+        },
+        {
+          title: '法律信息',
+          links: [
+            { text: '隐私政策', url: '/privacy' },
+            { text: '服务条款', url: '/terms' },
+            { text: '版权声明', url: '/copyright' }
+          ]
+        }
+      ],
+      // 社交媒体数据
+      socialMedia: [
+        { name: '微信', icon: 'el-icon-wechat', url: '#' },
+        { name: '微博', icon: 'el-icon-weibo', url: '#' },
+        { name: 'QQ', icon: 'el-icon-qq', url: '#' }
+      ]
+    }
   },
-};
+
+  computed: {
+    currentYear() {
+      return new Date().getFullYear()
+    }
+  },
+
+  methods: {
+    /**
+     * 处理链接悬停效果
+     * @param {Event} event - 鼠标事件对象
+     */
+    handleLinkHover(event) {
+      console.log(event)
+      // 可以添加自定义悬停效果
+    },
+
+    /**
+     * 处理订阅操作
+     */
+    handleSubscribe() {
+      if (!this.email) {
+        this.$message.warning('请输入邮箱地址')
+        return
+      }
+      // 这里添加订阅逻辑
+      this.$message.success('订阅成功！')
+      this.email = ''
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -84,11 +148,9 @@ export default {
 .footer {
   background-color: #2c3e50;
   color: #ffffff;
-  padding: 40px 0 20px;
+  padding: 60px 0 30px;
   width: 100%;
   position: relative;
-  bottom: 0;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* 容器样式 */
@@ -101,34 +163,43 @@ export default {
 /* 主要内容区域样式 */
 .footer-content {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 1.2fr 2fr 1.2fr;
   gap: 40px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 /* 品牌区域样式 */
-.footer-brand h3 {
-  font-size: 24px;
+.brand-title {
+  font-size: 28px;
   margin-bottom: 10px;
   color: #ffd04b;
+  font-weight: 600;
 }
 
-.footer-brand p {
+.brand-slogan {
+  font-size: 16px;
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+.brand-description {
   font-size: 14px;
   color: #a8b2b9;
+  line-height: 1.6;
 }
 
 /* 链接区域样式 */
 .footer-links {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 30px;
 }
 
 .links-group h4 {
   color: #ffd04b;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   font-size: 16px;
+  font-weight: 600;
 }
 
 .links-group ul {
@@ -138,48 +209,113 @@ export default {
 }
 
 .links-group ul li {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .links-group ul li a {
   color: #a8b2b9;
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
   font-size: 14px;
+  position: relative;
 }
 
 .links-group ul li a:hover {
   color: #ffffff;
+  padding-left: 5px;
 }
 
-/* 社交媒体图标样式 */
-.social-media {
+/* 社交媒体区域样式 */
+.footer-social {
+  text-align: right;
+}
+
+.social-icons {
   display: flex;
   gap: 15px;
   justify-content: flex-end;
-  align-items: flex-start;
+  margin-bottom: 30px;
 }
 
 .social-icon {
   color: #a8b2b9;
   font-size: 24px;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .social-icon:hover {
   color: #ffd04b;
+  transform: translateY(-3px);
+}
+
+/* 订阅区域样式 */
+.newsletter {
+  margin-top: 20px;
+}
+
+.newsletter h4 {
+  color: #ffd04b;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 10px;
+}
+
+.newsletter-form input {
+  padding: 8px 12px;
+  border: 1px solid #a8b2b9;
+  border-radius: 4px;
+  background: transparent;
+  color: #ffffff;
+  width: 200px;
+}
+
+.newsletter-form button {
+  padding: 8px 20px;
+  background-color: #ffd04b;
+  border: none;
+  border-radius: 4px;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.newsletter-form button:hover {
+  background-color: #ffdb6f;
 }
 
 /* 版权信息样式 */
 .footer-bottom {
   text-align: center;
-  padding-top: 20px;
+  padding-top: 30px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-bottom p {
   color: #a8b2b9;
   font-size: 14px;
+  margin: 5px 0;
 }
 
 /* 响应式布局 */
+@media (max-width: 1024px) {
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-social {
+    grid-column: span 2;
+    text-align: center;
+  }
+
+  .social-icons {
+    justify-content: center;
+  }
+}
+
 @media (max-width: 768px) {
   .footer-content {
     grid-template-columns: 1fr;
@@ -188,15 +324,21 @@ export default {
 
   .footer-links {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 
-  .social-media {
+  .social-icons {
     justify-content: center;
-    margin-top: 20px;
   }
 
-  .links-group {
-    margin-bottom: 20px;
+  .newsletter-form {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .newsletter-form input {
+    width: 100%;
+    max-width: 300px;
   }
 }
 </style>
