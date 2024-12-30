@@ -1,23 +1,43 @@
 <template>
+  <el-container>
 
-  <div>
+      <!-- Header 组件 -->
+      <el-header height="60px">
+        <!-- 你的 Header 组件 -->
 
-  <!--    header 整个项目固定的部分-->
-  <HeaderView class="HeaderView"></HeaderView>
-  </div>
+        <div>
 
-  <div>
-  <!--    页面的中间部分 项目中每个页面不一样的部分-->
-  <!--    使用路由视图 根据当前访问的路径, 映射页面级组件-->
-  <router-view></router-view>
-  </div>
+          <!--    header 整个项目固定的部分-->
+          <HeaderView class="HeaderView"></HeaderView>
+        </div>
 
-  <div>
-  <!--    footer 整个项目固定的部分-->
-  <FooterView></FooterView>
+      </el-header>
 
-  </div>
+      <!-- 主要内容区域 -->
+      <el-main>
+        <div class="music-view">
 
+          <div>
+            <!--    页面的中间部分 项目中每个页面不一样的部分-->
+            <!--    使用路由视图 根据当前访问的路径, 映射页面级组件-->
+            <router-view></router-view>
+          </div>
+
+        </div>
+      </el-main>
+
+
+      <el-footer>
+
+        <div>
+          <!--    footer 整个项目固定的部分-->
+          <FooterView></FooterView>
+
+        </div>
+
+      </el-footer>
+
+  </el-container>
 </template>
 
 
