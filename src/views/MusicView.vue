@@ -1,318 +1,349 @@
 <template>
+  <!-- 音乐页面容器 -->
   <div class="music-view">
-    <!-- 音乐列表容器 -->
-    <div class="music-list-container">
-      <h1 class="page-title">音乐列表</h1>
-
-      <!-- 音乐表格 -->
-      <el-table
-          :data="pagedMusicList"
-          stripe
-          border
-          height="450"
-          class="music-table"
+    <!-- 搜索区域 -->
+    <div class="search-section">
+      <el-input
+          v-model="searchQuery"
+          placeholder="搜索音乐..."
+          prefix-icon="el-icon-search"
+          clearable
+          @input="handleSearch"
       >
-        <!-- 选择列 -->
-        <el-table-column type="selection" width="55" />
+        <template #append>
+          <el-button icon="el-icon-search" @click="handleSearch">搜索</el-button>
+        </template>
+      </el-input>
+    </div>
 
-        <!-- 基本信息列 -->
-        <el-table-column
-            label="音乐ID"
-            prop="musicId"
-            width="100"
-            align="center"
-        />
-        <el-table-column
-            label="歌曲名称"
-            prop="title"
-            width="180"
-            show-overflow-tooltip
-        />
-        <el-table-column
-            label="歌手"
-            prop="artist"
-            width="150"
-            show-overflow-tooltip
-        />
-        <el-table-column
-            label="专辑"
-            prop="album"
-            width="150"
-            show-overflow-tooltip
-        />
-
-        <!-- 时间信息列 -->
-        <el-table-column
-            label="创建时间"
-            prop="createdAt"
-            width="160"
-            :formatter="formatDate"
-            align="center"
-        />
-        <el-table-column
-            label="更新时间"
-            prop="updatedAt"
-            width="160"
-            :formatter="formatDate"
-            align="center"
-        />
-
-        <!-- 播放统计列 -->
-        <el-table-column
-            label="本周播放次数"
-            prop="musicPlayCountWeek"
-            width="120"
-            align="center"
-        >
-          <template #header>
-            <div class="column-header-with-icon">
-              <span>本周播放次数</span>
-              <el-tooltip
-                  content="每天同步一次播放数据"
-                  placement="top"
-              >
-                <el-icon class="header-icon"><Notification /></el-icon>
-              </el-tooltip>
+    <!-- 音乐列表区域 -->
+    <div class="music-list">
+      <el-row :gutter="20">
+        <el-col :xs="24" :sm="12" :md="8" :lg="6" v-for="music in musicList" :key="music.id">
+          <!-- 音乐卡片 -->
+          <el-card class="music-card" shadow="hover">
+            <!-- 音乐封面 -->
+            <div class="music-cover">
+              <img :src="music.coverUrl" :alt="music.title">
+              <!-- 播放按钮 -->
+              <div class="play-overlay" @click="playMusic(music)">
+                <i class="el-icon-video-play"></i>
+              </div>
             </div>
-          </template>
-        </el-table-column>
+            <!-- 音乐信息 -->
+            <div class="music-info">
+              <h3 class="music-title">{{ music.title }}</h3>
+              <p class="music-artist">{{ music.artist }}</p>
+              <!-- 操作按钮 -->
+              <div class="music-actions">
+                <el-button type="text" @click="addToFavorites(music)">
+                  <i class="el-icon-star-off"></i>
+                </el-button>
+                <el-button type="text" @click="showMusicDetails(music)">
+                  <i class="el-icon-info"></i>
+                </el-button>
+              </div>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+    </div>
 
-        <!-- 音频播放器列 -->
-        <el-table-column
-            label="播放器"
-            width="300"
-            align="center"
-        >
-          <template #default="{ row }">
-            <audio
-                v-if="row.audioUrl"
-                ref="audioPlayer"
-                controls
-                class="audio-player"
-                @play="handlePlay(row)"
-            >
-              <source :src="row.audioUrl" type="audio/wav">
-              您的浏览器不支持音频播放
-            </audio>
-          </template>
-        </el-table-column>
+    <!-- 分页器 -->
+    <div class="pagination">
+      <el-pagination
+          v-model:current-page="currentPage"
+          v-model:page-size="pageSize"
+          :total="total"
+          :page-sizes="[12, 24, 36, 48]"
+          layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+      />
+    </div>
 
-        <!-- 操作按钮列 -->
-        <el-table-column
-            label="操作"
-            width="200"
-            fixed="right"
-            align="center"
-        >
-          <template #default="{ row }">
-            <el-space>
-              <el-button
-                  v-if="!row.audioUrl"
-                  type="primary"
-                  size="small"
-                  @click="playAudio(row)"
-              >
-                播放
-              </el-button>
-              <el-button
-                  type="success"
-                  size="small"
-                  @click="handleUpload(row)"
-              >
-                上传
-              </el-button>
-              <el-button
-                  type="info"
-                  size="small"
-                  @click="handleDownload(row)"
-              >
-                下载
-              </el-button>
-            </el-space>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <!-- 分页器 -->
-      <div class="pagination-container">
-        <el-pagination
-            v-model:current-page="currentPage"
-            v-model:page-size="pageSize"
-            :total="totalRowsCount"
-            :page-sizes="[10, 20, 30, 40]"
-            background
-            layout="total, sizes, prev, pager, next, jumper"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-        />
+    <!-- 音乐播放器 -->
+    <div class="music-player" v-if="currentMusic">
+      <div class="player-info">
+        <img :src="currentMusic.coverUrl" :alt="currentMusic.title" class="player-cover">
+        <div class="player-details">
+          <h4>{{ currentMusic.title }}</h4>
+          <p>{{ currentMusic.artist }}</p>
+        </div>
+      </div>
+      <div class="player-controls">
+        <el-button icon="el-icon-video-play" circle @click="togglePlay"></el-button>
+        <el-slider v-model="playProgress" :show-tooltip="false" @change="handleProgressChange"></el-slider>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed, onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
-import { Notification } from '@element-plus/icons-vue'
-import moment from 'moment'
-import { request } from '@/utils/request'
-
 export default {
-  name: 'MusicView',
-  components: { Notification },
-
-  setup() {
-    // 数据状态
-    const musicList = ref([])
-    const currentPage = ref(1)
-    const pageSize = ref(10)
-
-    // 计算属性
-    const pagedMusicList = computed(() => {
-      const start = (currentPage.value - 1) * pageSize.value
-      const end = start + pageSize.value
-      return musicList.value.slice(start, end)
-    })
-
-    const totalRowsCount = computed(() => musicList.value.length)
-
-    // 方法
-    const fetchMusicList = async () => {
-      try {
-        const response = await request.get('music/queryAll')
-        musicList.value = response.data.data
-      } catch (error) {
-        console.error('获取音乐列表失败:', error)
-        ElMessage.error('获取音乐列表失败')
-      }
-    }
-
-    const playAudio = async (row) => {
-      try {
-        const response = await request.get(`playAudio/${row.musicId}`)
-        const audioData = response.data.data
-
-        // 处理音频数据
-        const cleanString = audioData.substring(1, audioData.length - 1).replace(/\s+/g, '')
-        const byteArray = cleanString.split(',').map(Number)
-        const uint8Array = new Uint8Array(byteArray)
-
-        // 创建音频 Blob 和 URL
-        const audioBlob = new Blob([uint8Array], { type: 'audio/wav' })
-        row.audioUrl = URL.createObjectURL(audioBlob)
-
-        ElMessage.success('音频加载成功')
-      } catch (error) {
-        console.error('音频加载失败:', error)
-        ElMessage.error('音频加载失败')
-      }
-    }
-
-    const handlePlay = (row) => {
-      row.musicPlayCountWeek++
-      console.log(`播放音乐 ID: ${row.musicId}`)
-    }
-
-    // 分页处理
-    const handleSizeChange = (val) => {
-      pageSize.value = val
-      currentPage.value = 1
-    }
-
-    const handleCurrentChange = (val) => {
-      currentPage.value = val
-    }
-
-    // 格式化日期
-    const formatDate = (row, column, value) => {
-      return moment(value).format('YYYY-MM-DD HH:mm:ss')
-    }
-
-    // 生命周期钩子
-    onMounted(() => {
-      fetchMusicList()
-    })
-
+  name: "MusicView",
+  data() {
     return {
-      musicList,
-      currentPage,
-      pageSize,
-      pagedMusicList,
-      totalRowsCount,
-      playAudio,
-      handlePlay,
-      handleSizeChange,
-      handleCurrentChange,
-      formatDate
+      // 搜索相关
+      searchQuery: "", // 搜索关键词
+
+      // 分页相关
+      currentPage: 1, // 当前页码
+      pageSize: 12, // 每页显示数量
+      total: 0, // 总数据量
+
+      // 音乐列表
+      musicList: [
+        {
+          id: 1,
+          title: "示例音乐1",
+          artist: "艺术家1",
+          coverUrl: "https://via.placeholder.com/200",
+          duration: "03:30"
+        },
+        // 更多音乐数据...
+      ],
+
+      // 当前播放的音乐
+      currentMusic: null,
+      playProgress: 0, // 播放进度
+      isPlaying: false // 是否正在播放
+    };
+  },
+
+  methods: {
+    /**
+     * 处理搜索
+     */
+    handleSearch() {
+      console.log("搜索关键词:", this.searchQuery);
+      // 实现搜索逻辑
+    },
+
+    /**
+     * 播放音乐
+     * @param {Object} music 音乐对象
+     */
+    playMusic(music) {
+      this.currentMusic = music;
+      this.isPlaying = true;
+      console.log("播放音乐:", music.title);
+    },
+
+    /**
+     * 添加到收藏
+     * @param {Object} music 音乐对象
+     */
+    addToFavorites(music) {
+      console.log("添加到收藏:", music.title);
+      // 实现收藏逻辑
+    },
+
+    /**
+     * 显示音乐详情
+     * @param {Object} music 音乐对象
+     */
+    showMusicDetails(music) {
+      console.log("显示详情:", music.title);
+      // 实现显示详情逻辑
+    },
+
+    /**
+     * 切换播放状态
+     */
+    togglePlay() {
+      this.isPlaying = !this.isPlaying;
+      console.log("播放状态:", this.isPlaying ? "播放" : "暂停");
+    },
+
+    /**
+     * 处理进度条变化
+     * @param {Number} value 进度值
+     */
+    handleProgressChange(value) {
+      console.log("进度更新:", value);
+      // 实现进度更新逻辑
+    },
+
+    /**
+     * 处理页码变化
+     * @param {Number} page 页码
+     */
+    handleCurrentChange(page) {
+      this.currentPage = page;
+      // 实现页码变化逻辑
+    },
+
+    /**
+     * 处理每页显示数量变化
+     * @param {Number} size 显示数量
+     */
+    handleSizeChange(size) {
+      this.pageSize = size;
+      // 实现显示数量变化逻辑
     }
   }
-}
+};
 </script>
 
 <style scoped>
+/* 页面整体样式 */
 .music-view {
   padding: 20px;
   min-height: 100vh;
   background-color: #f5f7fa;
 }
 
-.music-list-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+/* 搜索区域样式 */
+.search-section {
+  max-width: 600px;
+  margin: 0 auto 30px;
 }
 
-.page-title {
-  font-size: 24px;
-  color: #303133;
+/* 音乐列表样式 */
+.music-list {
+  margin-bottom: 30px;
+}
+
+/* 音乐卡片样式 */
+.music-card {
   margin-bottom: 20px;
-  text-align: center;
+  transition: transform 0.3s ease;
 }
 
-.music-table {
-  margin-bottom: 20px;
+.music-card:hover {
+  transform: translateY(-5px);
 }
 
-.column-header-with-icon {
+/* 音乐封面样式 */
+.music-cover {
+  position: relative;
+  padding-top: 100%;
+  overflow: hidden;
+}
+
+.music-cover img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 播放按钮遮罩层 */
+.play-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
 }
 
-.header-icon {
+.play-overlay i {
+  font-size: 48px;
+  color: white;
+}
+
+.music-cover:hover .play-overlay {
+  opacity: 1;
+}
+
+/* 音乐信息样式 */
+.music-info {
+  padding: 15px;
+}
+
+.music-title {
+  margin: 0;
   font-size: 16px;
+  font-weight: bold;
+  color: #303133;
+}
+
+.music-artist {
+  margin: 5px 0;
+  font-size: 14px;
   color: #909399;
 }
 
-.audio-player {
-  width: 250px;
-  height: 32px;
+/* 音乐操作按钮样式 */
+.music-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
-.pagination-container {
+/* 分页器样式 */
+.pagination {
+  text-align: center;
+  margin-top: 30px;
+}
+
+/* 音乐播放器样式 */
+.music-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 15px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.player-cover {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.player-details h4 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.player-details p {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: #909399;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+  max-width: 500px;
+  margin: 0 20px;
 }
 
 /* 响应式布局 */
-@media (max-width: 1200px) {
-  .music-list-container {
-    margin: 0 20px;
-  }
-}
-
 @media (max-width: 768px) {
-  .music-list-container {
+  .music-player {
+    flex-direction: column;
     padding: 10px;
   }
 
-  .page-title {
-    font-size: 20px;
+  .player-controls {
+    width: 100%;
+    margin: 15px 0;
   }
 }
 </style>
