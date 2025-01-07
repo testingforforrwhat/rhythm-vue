@@ -1,78 +1,49 @@
 <template>
-  <!-- 头部导航容器 -->
-  <header class="header">
-    <!-- Element Plus 导航菜单 -->
+  <!--
+    顶部导航栏组件
+    功能：提供网站主要导航功能，包括品牌展示、主要功能入口和用户操作
+    特点：响应式设计、动画过渡效果、主题定制
+  -->
+  <header class="header-container">
     <el-menu
         :default-active="activeIndex"
         class="nav-menu"
         mode="horizontal"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b"
+        :ellipsis="false"
         @select="handleSelect"
     >
-      <!-- 品牌Logo -->
-      <div class="brand">
-        <img src="@/assets/logo.png" alt="Rhythm" class="logo" />
-        <span class="brand-name">Rhythm</span>
+      <!-- 品牌标识区域 -->
+      <div class="brand-container" @click="navigateToHome">
+        <img src="@/assets/logo.png" alt="Rhythm Logo" class="brand-logo" />
+        <span class="brand-title">Rhythm</span>
       </div>
 
-      <!-- 导航菜单项 -->
-      <el-menu-item index="1">
-        <router-link to="/home" class="nav-link">
-          <el-icon><HomeFilled /></el-icon>
-          <span>首页</span>
-        </router-link>
-      </el-menu-item>
-
-      <el-menu-item index="2">
-        <router-link to="/ads" class="nav-link">
-          <el-icon><Promotion /></el-icon>
-          <span>广告</span>
-        </router-link>
-      </el-menu-item>
-
-      <el-menu-item index="3">
-        <router-link to="/favourites" class="nav-link">
-          <el-icon><Star /></el-icon>
-          <span>收藏</span>
-        </router-link>
-      </el-menu-item>
-
-      <el-menu-item index="4">
-        <router-link to="/music" class="nav-link">
-          <el-icon><Headset /></el-icon>
-          <span>音乐</span>
-        </router-link>
-      </el-menu-item>
-
-      <el-menu-item index="5">
-        <router-link to="/musicCategories" class="nav-link">
-          <el-icon><Menu /></el-icon>
-          <span>分类</span>
-        </router-link>
-      </el-menu-item>
-
-      <!-- 右侧用户相关菜单 -->
-      <div class="user-menu">
-        <el-menu-item index="6">
-          <router-link to="/users" class="nav-link">
-            <el-icon><User /></el-icon>
-            <span>用户</span>
+      <!-- 主导航区域 -->
+      <div class="main-nav">
+        <el-menu-item
+            v-for="item in mainMenuItems"
+            :key="item.index"
+            :index="item.index"
+            :route="item.route"
+        >
+          <router-link :to="item.route" class="nav-link">
+            <el-icon><component :is="item.icon" /></el-icon>
+            <span class="nav-text">{{ item.label }}</span>
           </router-link>
         </el-menu-item>
+      </div>
 
-        <el-menu-item index="7">
-          <router-link to="/" class="nav-link">
-            <el-icon><Key /></el-icon>
-            <span>登录</span>
-          </router-link>
-        </el-menu-item>
-
-        <el-menu-item index="8">
-          <router-link to="/register" class="nav-link">
-            <el-icon><Plus /></el-icon>
-            <span>注册</span>
+      <!-- 用户操作区域 -->
+      <div class="user-actions">
+        <el-menu-item
+            v-for="item in userMenuItems"
+            :key="item.index"
+            :index="item.index"
+            :route="item.route"
+        >
+          <router-link :to="item.route" class="nav-link">
+            <el-icon><component :is="item.icon" /></el-icon>
+            <span class="nav-text">{{ item.label }}</span>
           </router-link>
         </el-menu-item>
       </div>
@@ -81,89 +52,138 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import {
   HomeFilled,
   Promotion,
   Star,
   Headset,
-  Menu,
+  Menu as MenuIcon,
   User,
   Key,
   Plus
 } from '@element-plus/icons-vue'
 
 export default {
-  name: "HeaderView",
-
-  // 注册图标组件
+  name: 'HeaderView',
   components: {
     HomeFilled,
     Promotion,
     Star,
     Headset,
-    Menu,
+    MenuIcon,
     User,
     Key,
     Plus
   },
 
   setup() {
-    // 当前激活的菜单项
+    const router = useRouter()
     const activeIndex = ref('1')
 
-    /**
-     * 处理菜单选择事件
-     * @param {string} index - 被选中菜单项的索引
-     */
+    // 主导航菜单配置
+    const mainMenuItems = reactive([
+      { index: '1', label: '首页', icon: 'HomeFilled', route: '/home' },
+      { index: '2', label: '广告', icon: 'Promotion', route: '/ads' },
+      { index: '3', label: '收藏', icon: 'Star', route: '/favourites' },
+      { index: '4', label: '音乐', icon: 'Headset', route: '/music' },
+      { index: '5', label: '分类', icon: 'MenuIcon', route: '/musicCategories' }
+    ])
+
+    // 用户菜单配置
+    const userMenuItems = reactive([
+      { index: '6', label: '用户', icon: 'User', route: '/users' },
+      { index: '7', label: '登录', icon: 'Key', route: '/' },
+      { index: '8', label: '注册', icon: 'Plus', route: '/register' }
+    ])
+
+    // 菜单选择处理
     const handleSelect = (index) => {
-      console.log('选中的菜单项:', index)
+      activeIndex.value = index
+    }
+
+    // 品牌点击跳转
+    const navigateToHome = () => {
+      router.push('/home')
     }
 
     return {
       activeIndex,
-      handleSelect
+      mainMenuItems,
+      userMenuItems,
+      handleSelect,
+      navigateToHome
     }
   }
 }
 </script>
 
 <style scoped>
-/* 头部导航样式 */
-.header {
+/* 容器基础样式 */
+.header-container {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: var(--el-menu-bg-color);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-/* 导航菜单样式 */
+/* 导航菜单布局 */
 .nav-menu {
   display: flex;
   align-items: center;
-  height: 60px;
-  padding: 0 20px;
+  height: 64px;
+  border: none !important;
 }
 
 /* 品牌区域样式 */
-.brand {
+.brand-container {
   display: flex;
   align-items: center;
-  margin-right: 40px;
-  padding: 0 15px;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.logo {
-  height: 32px;
-  margin-right: 10px;
+.brand-container:hover {
+  transform: scale(1.05);
 }
 
-.brand-name {
-  color: #ffd04b;
-  font-size: 20px;
-  font-weight: bold;
+.brand-logo {
+  height: 36px;
+  width: auto;
+  margin-right: 12px;
+  object-fit: contain;
+}
+
+.brand-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  background: linear-gradient(45deg, #ffd04b, #ff9800);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
+}
+
+/* 主导航区域 */
+.main-nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* 用户操作区域 */
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  padding-right: 16px;
 }
 
 /* 导航链接样式 */
@@ -172,39 +192,71 @@ export default {
   color: inherit;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
+  padding: 0 8px;
+  transition: all 0.3s ease;
 }
 
-/* 右侧用户菜单样式 */
-.user-menu {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
+.nav-link:hover {
+  opacity: 0.9;
 }
 
-/* 图标样式 */
 .el-icon {
-  margin-right: 4px;
   font-size: 18px;
+  transition: transform 0.2s ease;
 }
 
-/* 响应式布局 */
+.nav-link:hover .el-icon {
+  transform: scale(1.1);
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+  .brand-title {
+    font-size: 1.2rem;
+  }
+
+  .nav-text {
+    font-size: 14px;
+  }
+}
+
 @media (max-width: 768px) {
-  .brand-name {
+  .header-container {
+    position: sticky;
+  }
+
+  .brand-title {
     display: none;
   }
 
-  .nav-menu {
-    padding: 0 10px;
-  }
-
-  .el-menu-item span {
+  .nav-text {
     display: none;
   }
 
   .el-icon {
-    margin-right: 0;
     font-size: 20px;
+    margin: 0;
+  }
+
+  .nav-menu {
+    padding: 0 8px;
+    height: 56px;
+  }
+
+  .main-nav {
+    gap: 4px;
+  }
+
+  .user-actions {
+    padding-right: 8px;
+  }
+}
+
+/* 暗色主题适配 */
+@media (prefers-color-scheme: dark) {
+  .header-container {
+    background: var(--el-bg-color-overlay);
   }
 }
 </style>
